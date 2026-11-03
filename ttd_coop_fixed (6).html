@@ -1,0 +1,1841 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Челл-ТД</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://wbxtrk9iv2.apps.bot-hosting.cloud; media-src 'self' data: blob:; connect-src 'self' https://wbxtrk9iv2.apps.bot-hosting.cloud; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#0f1220;--card:#1a1f36;--card2:#232949;--text:#eef0ff;--dim:#8c92b8;--acc:#7c8cff;--ok:#4cd98a;--bad:#ff5d6c;--warn:#ffc857}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;overflow:hidden}
+section{position:absolute;inset:0;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 10px env(safe-area-inset-bottom)}
+[hidden]{display:none!important}
+h1{font-size:18px;margin:12px 4px 2px}
+.sub{color:var(--dim);font-size:13px;margin:0 4px 8px}
+#list{flex:1;overflow-y:auto;padding:2px 0 8px}
+.card{display:flex;align-items:center;gap:10px;background:var(--card);border:2px solid transparent;border-radius:12px;padding:10px;margin:6px 0;cursor:pointer}
+.card.sel{border-color:var(--acc);background:var(--card2)}
+.card .em{font-size:26px;width:38px;height:38px;line-height:38px;text-align:center;flex:none}
+.card .nm{font-weight:600;font-size:15px}
+.card .st{color:var(--dim);font-size:12px;margin-top:2px}
+.card .ck{margin-left:auto;font-size:20px}
+button{font:inherit;color:var(--text);border:0;border-radius:12px;padding:12px 14px;background:var(--card2)}
+button:active{transform:scale(.97)}
+.big{background:linear-gradient(135deg,#6c7bff,#9b6cff);font-weight:700;font-size:16px;width:100%;padding:14px}
+.big:disabled{opacity:.4}
+.bar{display:flex;gap:8px;align-items:center;padding:8px 2px}
+.chip{background:var(--card);border-radius:10px;padding:6px 10px;font-size:14px;font-weight:600;white-space:nowrap}
+#cv-wrap{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+canvas{width:100%;max-height:100%;touch-action:manipulation;border-radius:14px;background:#141830}
+#boss{display:none;margin:2px 0 4px}
+#boss .bb{height:12px;background:#2a2f52;border-radius:6px;overflow:hidden}
+#boss .bb>div{height:100%;background:linear-gradient(90deg,#ff5d6c,#ff9a5d);width:100%}
+#boss .bt{font-size:12px;color:var(--dim);margin-bottom:2px}
+#prev{font-size:13px;color:var(--dim);text-align:center;padding:4px 0}
+#squad{display:flex;gap:6px;padding:4px 0}
+.sq{flex:1;min-width:0;background:var(--card);border:2px solid transparent;border-radius:10px;padding:6px 2px;text-align:center;font-size:11px;line-height:1.25}
+.sq .em{font-size:20px;width:30px;height:30px;line-height:30px;margin:0 auto}
+.sq.hold{border-color:var(--warn);background:var(--card2)}
+.sq.on{border-color:var(--ok)}
+.sq .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 2px}
+#info{font-size:12px;color:var(--dim);min-height:34px;padding:2px 4px}
+#info b{color:var(--text)}
+.row{display:flex;gap:8px}
+.row>*{flex:1}
+#over{position:absolute;inset:0;background:rgba(10,12,24,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px}
+#over h2{margin:0;font-size:26px}
+#over p{margin:0;color:var(--dim)}
+.seg{display:flex;gap:6px;margin:4px 0}.seg button{flex:1;padding:8px 2px;font-size:13px}.seg .on{background:var(--acc);font-weight:700}#opt-m{flex-wrap:wrap}#opt-m button{flex:1 1 30%}
+.mb{display:block;width:100%;padding:18px;font-size:18px;margin:8px 0;font-weight:700}.lbl{font-size:13px;color:var(--dim);margin:8px 4px 0}
+.bar .chip{padding:6px 7px;font-size:13px;font-variant-numeric:tabular-nums}.bar{gap:5px;flex-wrap:wrap;row-gap:4px}.bar button.chip{flex:none}#h-time{min-width:0}.chip.on{background:var(--acc);color:#0b0e1c}
+#upg{position:absolute;left:50%;transform:translateX(-50%);width:min(300px,92%);background:linear-gradient(160deg,rgba(38,45,80,.97),rgba(18,22,44,.97));border:1.5px solid var(--rc,#7c8cff);border-radius:18px;padding:12px;color:var(--text);z-index:5;box-shadow:0 10px 30px #000c,0 0 20px color-mix(in srgb,var(--rc,#7c8cff) 38%,transparent);backdrop-filter:blur(8px)}
+#upg{touch-action:none;cursor:grab}#upg.drag{cursor:grabbing;opacity:.82}#upg:before{content:"";display:block;width:38px;height:4px;border-radius:2px;background:rgba(255,255,255,.28);margin:-4px auto 8px}
+#upg .u-h{display:flex;align-items:center;gap:10px}#upg .u-h b{flex:1;font-size:16px;font-weight:800;letter-spacing:.2px}
+#upg .u-em{width:42px;height:42px;line-height:42px;text-align:center;font-size:24px;background:rgba(255,255,255,.07);border:1.5px solid var(--rc,#7c8cff);border-radius:13px;overflow:hidden}
+#upg .u-x{width:30px;height:30px;padding:0;background:rgba(255,255,255,.1);border:0;color:var(--dim);border-radius:50%;font-size:14px}
+#upg .u-lv{margin:10px 0 2px;display:flex;justify-content:center;font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--dim)}
+#upg .u-dots{display:flex;justify-content:center;gap:6px;margin:4px 0 8px}
+#upg .u-dots i{width:22px;height:5px;border-radius:3px;background:rgba(255,255,255,.14)}#upg .u-dots i.on{background:var(--rc,#7c8cff);box-shadow:0 0 8px var(--rc,#7c8cff)}
+#upg .u-r{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border-radius:11px;padding:7px 11px;margin:4px 0;font-size:14px}
+#upg .u-r span{flex:1;color:var(--dim);font-weight:600}#upg .u-r b{font-size:15px;color:#fff}#upg .u-r i{font-style:normal;color:var(--ok);font-weight:700;min-width:46px;text-align:right}
+#upg .u-r button{background:rgba(124,140,255,.18);color:#c9d0ff;border:1px solid rgba(124,140,255,.45);border-radius:9px;padding:5px 14px;font-weight:700}
+#upg .u-r i.red{color:#ff8a95}#upg .u-note{margin:6px 0 2px;font-size:12px;text-align:center;color:var(--warn)}
+#upg .u-up{display:block;width:100%;margin-top:10px;padding:11px;font-size:16px;font-weight:800;background:linear-gradient(135deg,#38d884,#1fa862);color:#06210f;border:0;border-radius:13px;box-shadow:0 4px 14px rgba(40,200,120,.35)}
+#upg .u-up.off{background:rgba(255,255,255,.1);color:var(--dim);box-shadow:none}
+#upg .u-sell.armed{background:rgba(255,93,108,.22);color:#fff}#prev:empty{display:none}
+#upg .u-sell{display:block;width:100%;margin-top:16px;padding:9px;font-size:14px;font-weight:700;background:transparent;color:#ff8591;border:1.5px solid rgba(255,93,108,.6);border-radius:13px}
+
+/* ── выбор режима и карты ── */
+#s-play{padding-left:12px;padding-right:12px}
+#s-play .scroll{flex:1;min-height:0;overflow-y:auto;padding:0 0 8px;margin:0 -4px;padding:0 4px}
+.ph{display:flex;align-items:center;gap:10px;margin:10px 0 4px}
+.ph h1{margin:0;font-size:20px}
+.ph .bk{width:38px;height:38px;padding:0;border-radius:50%;background:var(--card);font-size:18px}
+.sec{display:flex;align-items:center;gap:8px;margin:14px 2px 8px;font-size:12px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--dim)}
+.sec:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(140,146,184,.35),transparent)}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mode{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 4px 10px;background:var(--card);border:2px solid transparent;border-radius:16px;text-align:center;transition:transform .12s,border-color .15s,background .15s}
+.mode .mi{font-size:28px;line-height:1}
+.mode .mn{font-weight:800;font-size:13px}
+.mode .mr{font-size:11px;color:var(--dim);line-height:1.35}
+.mode .md{margin-top:4px;padding:3px 8px;border-radius:999px;background:rgba(124,140,255,.15);color:#c9d0ff;font-size:12px;font-weight:800}
+.mode.wide{grid-column:1/-1;flex-direction:row;justify-content:center;gap:14px;padding:12px 14px;text-align:left}.mode.wide .md{margin:0}
+.mode.on{border-color:var(--c);background:linear-gradient(170deg,color-mix(in srgb,var(--c) 22%,var(--card2)),var(--card));box-shadow:0 6px 18px color-mix(in srgb,var(--c) 30%,transparent);transform:translateY(-2px)}
+.mode.on .md{background:var(--c);color:#0b0e1c}
+.mode.on:after{content:"✓";position:absolute;top:6px;right:8px;font-size:12px;font-weight:900;color:var(--c)}
+.maps{display:flex;flex-direction:column;gap:8px}
+.map{display:flex;gap:12px;align-items:center;text-align:left;padding:8px;background:var(--card);border:2px solid transparent;border-radius:16px;width:100%;transition:border-color .15s,background .15s}
+.map canvas.pv{width:132px;height:94px;max-height:none;flex:none;border-radius:11px;background:#141830;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.map .mt{flex:1;min-width:0}
+.map .mn{font-weight:800;font-size:15px}
+.map .md{font-size:12px;color:var(--dim);margin:2px 0 6px;line-height:1.3}
+.tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--text)}
+.tag.warn{background:rgba(255,200,87,.16);color:var(--warn)}
+.tag.ok{background:rgba(76,217,138,.15);color:var(--ok)}
+.map.on{border-color:var(--acc);background:linear-gradient(170deg,var(--card2),var(--card));box-shadow:0 6px 18px rgba(124,140,255,.25)}
+.sumbar{display:flex;align-items:center;gap:8px;margin:8px 0 6px;padding:9px 12px;background:var(--card);border-radius:12px;font-size:12.5px;color:var(--dim)}
+.sumbar b{color:var(--text)}
+.sumbar .sq-t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sumbar.warn{background:rgba(255,200,87,.12);color:var(--warn)}
+
+/* ── кооператив ── */
+#squad.coop{overflow-x:auto;flex-wrap:nowrap}#squad.coop .sq{flex:0 0 68px}
+.chat{background:var(--card);border-radius:12px;padding:8px 10px;overflow-y:auto;font-size:13px;line-height:1.4;word-break:break-word}
+.chat b{font-weight:700}
+.chatin{display:flex;gap:6px;padding:6px 0}.chatin input{flex:1;min-width:0;padding:10px 12px;border-radius:12px;border:1px solid #2c3354;background:#171b30;color:#fff;font-size:15px}
+.chatin button{flex:0 0 auto;padding:0 16px}
+#gchat{position:absolute;left:10px;right:10px;bottom:calc(env(safe-area-inset-bottom) + 8px);height:40%;background:rgba(15,18,32,.97);border:1px solid #2c3354;border-radius:14px;padding:8px;z-index:30;display:flex;flex-direction:column}
+#gchat .chat{flex:1;min-height:0}
+#gchat .gh{display:flex;align-items:center;font-weight:800;margin-bottom:6px}#gchat .gh span{flex:1}
+#sv-new-box{display:flex;gap:6px;margin:6px 0 8px}#sv-title{flex:1;min-width:0;padding:11px 12px;border-radius:12px;border:1px solid #2c3354;background:#171b30;color:#fff;font-size:15px}
+.hostbadge{color:var(--warn)}
+</style>
+</head>
+<body>
+<section id="s-menu">
+  <div style="margin:auto 0">
+    <h1 style="font-size:30px;text-align:center">🛡 Челл-ТД</h1>
+    <p class="sub" style="text-align:center;margin-bottom:24px">Защити базу от волн монстров</p>
+    <button class="big mb" id="m-play">▶ Играть</button>
+    <button class="mb" id="m-srv">🌐 Серверы (кооп)</button>
+    <button class="mb" id="m-chel"></button>
+  </div>
+</section>
+
+<section id="s-play" hidden>
+  <div class="ph"><button class="bk" id="p-back">←</button><h1>Новая игра</h1></div>
+  <div class="scroll">
+    <div class="sec">Режим</div>
+    <div class="modes" id="opt-d"></div>
+    <div class="sec">Карта</div>
+    <div class="maps" id="opt-m"></div>
+  </div>
+  <div class="sumbar" id="sumbar"><span class="sq-t" id="play-squad"></span><span id="map-info" hidden></span></div>
+  <button class="big" id="start" style="margin-bottom:8px">⚔️ В бой</button>
+</section>
+
+<section id="s-pick" hidden>
+  <h1>🛡 Челл-ТД</h1>
+  <p class="sub" id="pick-sub">Выберите до 5 человечинок. Урон и редкость взяты из дуэлей.</p>
+  <input id="pick-q" type="search" placeholder="🔎 Поиск по имени" autocomplete="off" style="width:100%;box-sizing:border-box;margin:6px 0 8px;padding:11px 12px;border-radius:12px;border:1px solid #2c3354;background:#171b30;color:#fff;font-size:15px">
+  <div id="list"></div>
+  <button class="big" id="go">✔ Готово</button>
+</section>
+
+<section id="s-srv" hidden>
+  <div class="ph"><button class="bk" id="sv-back">←</button><h1>🌐 Серверы</h1></div>
+  <p class="sub" id="sv-sub">Играйте вместе: у каждого свой бюджет, жизни общие, чем больше игроков, тем крепче враги (+0.3× за каждого)</p>
+  <div id="sv-new-box"><input id="sv-title" maxlength="28" placeholder="Название сервера (необязательно)"></div>
+  <button class="big" id="sv-new" style="margin-bottom:6px">➕ Создать сервер</button>
+  <div class="scroll" id="sv-list" style="flex:1;min-height:0;overflow-y:auto"></div>
+</section>
+
+<section id="s-lobby" hidden>
+  <div class="ph"><button class="bk" id="lb-back">←</button><h1 id="lb-title">Сервер</h1></div>
+  <div class="scroll" style="flex:1;min-height:0;overflow-y:auto">
+    <div class="sec">Игроки</div><div id="lb-players"></div>
+    <button id="lb-squad" style="width:100%;margin:8px 0">🧍 Мой отряд</button>
+    <div id="lb-set"><div class="sec">Режим</div><div class="seg" id="lb-d" style="flex-wrap:wrap"></div><div class="sec">Карта</div><div class="seg" id="lb-m" style="flex-wrap:wrap"></div></div>
+    <p class="sub" id="lb-info"></p>
+    <div class="sec">💬 Чат</div><div class="chat" id="lb-chat" style="height:150px"></div>
+  </div>
+  <div class="chatin"><input id="lb-in" maxlength="200" placeholder="Сообщение…" autocomplete="off"><button id="lb-send">➤</button></div>
+  <button class="big" id="lb-start" style="margin-bottom:8px">⚔️ Начать</button>
+</section>
+
+<section id="s-game" hidden>
+  <div class="bar">
+    <span class="chip" id="h-lives">❤️ 10</span>
+    <span class="chip" id="h-wave">🌊 1/8</span>
+    <span class="chip" id="h-money">💰 0</span>
+    <span class="chip" id="h-gems" hidden>💎 0</span>
+    <span class="chip" id="h-time">⏱0:00</span>
+    <span style="flex:1"></span>
+    <button class="chip" id="b-chat" hidden>💬</button>
+    <button class="chip" id="b-snd">🔊</button>
+    <audio id="custom-track" src="Bensley%20-%20Vex.mp3" loop preload="auto"></audio>
+    <button class="chip" id="b-auto" title="Автоскип">⏩</button>
+    <button class="chip" id="b-speed">×1</button>
+  </div>
+  <div id="boss"><div class="bt" id="boss-t">👹 БОСС</div><div class="bb"><div id="boss-f"></div></div></div>
+  <div id="cv-wrap"><canvas id="cv"></canvas><div id="upg" hidden></div></div>
+  <div id="prev"></div>
+  <div id="info"></div>
+  <div id="squad"></div>
+  <div class="row" style="padding:6px 0 8px">
+    <button class="big" id="b-place" hidden>📍 Поставить</button>
+    <button class="big" id="b-skip" hidden>⏭ Скип волны</button>
+    <button class="big" id="b-wave">▶ Волна 1</button>
+    <button id="b-ff" style="flex:0 0 auto">🏳️</button>
+  </div>
+  <div id="gchat" hidden><div class="gh"><span>💬 Чат</span><button class="chip" id="gc-x">✕</button></div><div class="chat" id="gc-list"></div><div class="chatin"><input id="gc-in" maxlength="200" placeholder="Сообщение…" autocomplete="off"><button id="gc-send">➤</button></div></div>
+  <div id="over" hidden>
+    <h2 id="o-t"></h2><p id="o-s"></p>
+    <p id="o-r" style="font-weight:800;font-size:18px;color:#6cf0ff;margin:4px 0"></p>
+    <button class="big" id="o-retry" hidden style="max-width:320px;margin-bottom:8px">💎 Повторить зачисление</button>
+    <button class="big" id="o-again" style="max-width:320px">🔁 Играть снова</button>
+  </div>
+</section>
+
+<script>
+"use strict";
+// ==ENGINE START==
+let PATH_LEN = 12;
+const DIFFS = [{name:"😊 Лёгкий",hp:0.6,lives:15,cash:300,gold:1.3,waves:20,diamonds:5,coins:1000},{name:"😐 Нормальный",bossRegen:0.004,hp:0.85,lives:12,cash:450,gold:1.05,waves:35,diamonds:25,coins:3000,mini:30,stun:true,stunner:true},{name:"😈 Сложный",bossRegen:0.005,hp:1.25,lives:8,cash:300,gold:0.95,waves:40,diamonds:40,coins:6000,mini:30,stun:true,stunner:true},{name:"♾ Бесконечный",hp:1,lives:12,cash:450,gold:1,waves:40,diamonds:0,stun:true,endless:true}];
+const MAX_SQUAD = 5;
+let WAVES = 8, WSCALE = 8; // WAVES = Infinity в бесконечном режиме, WSCALE — по какой шкале растёт сложность
+const maxUnits = () => (G && G.diff.endless ? ENDLESS_UNITS : MAX_UNITS); // лимит на каждого игрока
+function ownPlaced(g, u) { return Object.values(g.placed).filter(p => !g.coop || g.towers[p.t].owner === u); }
+const GEM_PER_WAVE = 0.5; // 💎 за каждую волну начиная с 20-й
+const endlessGems = g => g.diff.endless ? Math.max(0, g.wave - ENDLESS_GEM_WAVE + 1) * GEM_PER_WAVE : 0;
+const endlessPay = g => Math.floor(endlessGems(g)); // начисляются целые алмазы
+const isMini = (g, w) => g.diff.endless ? (w >= 10 && w % 10 === 0) : g.diff.mini === w;
+const wavesLbl = () => isFinite(WAVES) ? "/" + WAVES : "";
+const MUSIC_VOL = 0.35; // музыка на 30% тише (было 0.5)
+let sfxBoost = 1;
+const BASE_LIVES = 10;
+const RANGE = {halloween:2, common:2, rare:2, epic:3, legendary:3, mythic:3, secret:4, special:3, godly:4, imbaogaggg:2};
+const WAVE_F = [1.32, 1.8, 2.28, 2.82, 3.36, 3.96, 4.56];
+const waveF = w => { const x = Math.min(1, (w - 1) / Math.max(1, WSCALE - 2)), p = x * (WAVE_F.length - 1), i = Math.floor(p), f = p - i; return (WAVE_F[i] + (WAVE_F[Math.min(i + 1, WAVE_F.length - 1)] - WAVE_F[i]) * f) * (1 + (WSCALE - 8) * 0.06 * x) * (0.6 + 0.4 * Math.min(1, x * 4)) * (1 + 3 * x * x) * Math.pow(1.07, Math.max(0, w - WSCALE)); };
+// ── стан от босса: время в секундах переводится в ходы (1 ход = 0.75с на ×1) ──
+const STUN_RANGE = 60;                       // босс «подходит ближе» к человечинке на это расстояние
+const stunTicks = s => Math.ceil(s / 0.75);
+const STUN_MINI = stunTicks(5), STUN_BOSS = stunTicks(2), STUN_CD = stunTicks(10);
+// ── призыв прислужников: главный босс зовёт чаще и больше, мини-босс — реже и меньше ──
+const SUMMON_WM = {normal:1, fast:0.6, swarm:0.4, shield:2};
+const SUMMON_BOSS = {first:4, every:12, n:3, cap:9, hpK:0.6, kinds:["normal","fast","normal","shield"]};
+const SUMMON_MINI = {first:6, every:18, n:2, cap:4, hpK:0.8, kinds:["normal","swarm"]};
+const SHIELD_HITS = px => 3 + Math.round(px * 5);   // «N» ударов щитоносца: от 3 в начале до 8 в конце
+const SHIELD_AOE = 0.1;                              // по площади щитоносец получает лишь 10%
+const STUN_FAST = stunTicks(2), STUN_FAST_CD = stunTicks(15); // быстрый оглушитель: стан 2с, кд 15с
+const BOSS_F = 1.6, BOSS_ARMOR = 0.15, BOSS_REGEN = 0.01, IMBA_POWER = 5.0;
+const SIZE_MULT = {1:0.9, 2:0.95, 3:1, 4:1, 5:1};
+const ENEMY_EMOJI = {shield:"👾", stunner:"👾", mini:"👾", normal:"👾", fast:"👾", tank:"👾", swarm:"👾", dasher:"👾", brute:"👾", boss:"👾"};
+// все враги — 👾, но у каждого типа свой цвет кольца, размер и оттенок
+const LOOK = {
+  stunner:{s:20, c:"#c08a5e", h:115}, normal:{s:22, c:"#a78bfa", h:0}, fast:{s:19, c:"#3ddc84", h:235}, tank:{s:26, c:"#5aa0ff", h:305, th:1},
+  shield:{s:24, c:"#9ad1ff", h:200, th:1}, swarm:{s:15, c:"#ff9a3d", h:120}, dasher:{s:19, c:"#ffd23f", h:135}, brute:{s:30, c:"#ff4d4d", h:90, th:1}, boss:{s:40, c:"#ffb300", h:130, th:1}, mini:{s:34, c:"#ff7a00", h:60, th:1}
+};
+const DOT = {shield:"🛡", stunner:"🟤", normal:"🟣", fast:"🟢", tank:"🔵", swarm:"🟠", dasher:"🟡", brute:"🔴", boss:"👑", mini:"👹"};
+const KIND_NAME = {shield:"щитонос.", stunner:"оглуш.", normal:"обыч.", fast:"быстр.", tank:"танк", swarm:"рой", dasher:"рывок", brute:"громила"};
+const MUT_NOTES = {
+  "Сгоревшая":"🔥 +5% макс. HP цели к удару", "Заражен":"🧟 30%: +8% макс. HP цели",
+  "Крут":"😎 20%: крит ×1.5", "Богат":"🤑 урон +10%", "Заморожен":"🥶 25%: враг стоит ход",
+  "Админ":"👨‍💻 урон +20%", "Хакер":"💻 каждые 25 ударов +1 жизнь базе"
+};
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const towerRange = t => RANGE[t.rarity] || 2;
+const TICK_SEC = 0.75; // длительность одного хода на скорости ×1
+const ALLY_ATTACK_RANGE = 5; // дальность призванного в клетках маршрута
+const ALLY_ATTACK_CD = 3; // дальняя атака раз в 3 секунды
+const ALLY_CONTACT_GAP = 0.3; // физическое столкновение, не дальняя атака
+const CD_SEC = {common:1.0, rare:0.9, epic:0.85, legendary:0.75, mythic:0.65, secret:0.6, special:0.7, godly:0.5, imbaogaggg:0.75};
+// Все человечинки редкости ИМБАОГААГГГ — фермы, а не атакующие башни.
+const MAX_FARMS = 3;
+const FARM_INCOME = {1:100, 2:150, 3:200};
+const isFarmTower = t => !!t && t.rarity === "imbaogaggg";
+const farmIncome = lvl => FARM_INCOME[Math.max(1, Math.floor(lvl || 1))] || 0;
+const towerMaxLvl = t => isFarmTower(t) ? 3 : MAX_LVL;
+// перезарядка по уровням: снижается не на каждом улучшении, а только на некоторых
+const CD_TABLE = {secret:[2, 2, 1.5, 1.5, 1], godly:[2.5, 2.5, 2, 2, 1], mythic:[1.5, 1.5, 1.2, 1.2, 0.8]};
+const CD_STEPS = [1, 0.9, 0.9, 0.8, 0.8]; // остальные редкости: падает на ур. 2 и 4
+const summonN = (t, l) => t.summon.n + ((l || 1) >= 3 ? 1 : 0);   // на 3-м уровне +1 союзник
+const summonHp = (t, l) => Math.round(t.summon.hp * (1 + 0.25 * ((l || 1) - 1))); // HP союзника +25% за уровень
+const summonCd = l => (Math.min(5, Math.max(1, l || 1)) >= 5 ? 25 : 30); // призыватель: 30с, на 5-м уровне 25с
+const towerCd = (t, l) => { const L = Math.min(5, Math.max(1, l || 1)), tb = CD_TABLE[t.rarity]; if (t.summon) return summonCd(L); return tb ? tb[L - 1] : (CD_SEC[t.rarity] || 0.8) * CD_STEPS[L - 1]; };
+const AOE_LVL = {secret:2, godly:3}, AOE_F = 0.6;
+// AoE-конус: основной удар (по цели) идёт по всему радиусу атаки, а площадь — это сектор внутри
+// меньшего круга вокруг башни, повёрнутый в сторону цели. f — доля радиуса атаки, a — полуугол (рад)
+const AOE_CONE = {secret:{f:0.35, a:0.8}, godly:{f:0.4, a:1.05}};
+const aoeR = (t, l) => towerR(t, l) * AOE_CONE[t.rarity].f; // у площади свой, небольшой радиус
+const fmtHp = n => n >= 1e6 ? (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M" : n >= 1e3 ? (n / 1e3).toFixed(1).replace(/\.0$/, "") + "K" : String(Math.max(0, Math.ceil(n)));
+const rShow = r => (r / 10).toFixed(1).replace(/\.0$/, ""); // радиус для показа (в десятках), на геймплей не влияет
+const towerR = (t, l) => 40 + towerRange(t) * 38 + ((l || 1) - 1) * 8; // радиус атаки в пикселях
+const HP_K = 0.32, BOSS_MULT = 25;
+const ENDLESS_GEM_WAVE = 20, ENDLESS_UNITS = 25; // бесконечный режим: 💎 копятся с 20-й волны (+1 за волну), лимит юнитов 25
+const MAX_LVL = 5, MAX_UNITS = 15, ENEMY_BUFF = 1.4, ARMOR = {shield:0.1, mini:0.1, boss:0.15, brute:0.2, tank:0.1, dasher:0.05};
+const COST = {halloween:250, common:40, rare:70, epic:120, legendary:200, mythic:300, secret:420, special:330, godly:800, imbaogaggg:250};
+const towerCost = t => COST[t.rarity] || 100;
+const upCost = (t, l) => Math.round(towerCost(t) * 0.6 * l);
+const REWARD = {shield:20, stunner:12, mini:80, normal:8, fast:8, swarm:4, dasher:10, tank:18, brute:35, boss:200};
+let breakLeft = null;
+let SEQ = [], CELLS = [];
+function towerPower(t) {
+  const avg = t.rarity === "imbaogaggg" ? IMBA_POWER : (t.dmgMin + t.dmgMax) / 2;
+  return avg * (2 * towerRange(t) + 1) * 0.8;
+}
+// «средний удар» отряда (среднее геометрическое, без имбы) — от него считается HP врагов,
+// чтобы обычный враг на старте умирал за 1–2 удара, а дальше HP рос по волнам
+function hpBaseOf(ts) {
+  // призыватели в расчёт не идут (их урон сам подстраивается под отряд), кроме случая, когда в отряде только они
+  const real = ts.filter(t => !t.summon), pool = real.length ? real : ts;
+  const a = pool.filter(t => t.rarity !== "imbaogaggg" || t.summon).map(t => Math.max(1, (t.dmgMin + t.dmgMax) / 2));
+  if (!a.length) return Math.max(5, IMBA_POWER * 4);
+  return Math.exp(a.reduce((s, v) => s + Math.log(v), 0) / a.length);
+}
+function squadPower(ts) {
+  if (!ts.length) return 1;
+  const m = ts.map(t => Math.sqrt(towerPower(t))).reduce((a, b) => a + b, 0) / ts.length;
+  return ts.length * m * m * (SIZE_MULT[ts.length] || 1);
+}
+function newGame(towers, diff, map) {
+  const ts = towers.map(t => Object.assign({}, t, {hits: 0}));
+  const hb = hpBaseOf(ts);
+  return {towers: ts, placed: {}, wave: 0, nid: 1, enemyNid: 1, snapSeq: 0, money: diff.cash, wallets: null, gold: diff.gold, invest: {}, lives: diff.lives, maxLives: diff.lives, hpMul: diff.hp, diff, map, enemies: [], queue: [], extra: [], allies: [], kills: 0,
+          tick: 0, log: "", over: null, power: squadPower(ts), hpBase: hb, fx: [], paidWave: 0};
+}
+// Кооп хранит бюджет отдельно для каждого игрока. В одиночной игре остаётся G.money.
+function playerMoney(g, u) {
+  if (!g) return 0;
+  if (!g.coop || !g.wallets) return Math.max(0, Number(g.money) || 0);
+  const key = String(u == null ? g.coop.me : u);
+  return Math.max(0, Math.floor(Number(g.wallets[key]) || 0));
+}
+function setPlayerMoney(g, u, value) {
+  const amount = Math.max(0, Math.floor(Number(value) || 0));
+  if (!g) return amount;
+  if (!g.coop || !g.wallets) { g.money = amount; return amount; }
+  const key = String(u == null ? g.coop.me : u);
+  g.wallets[key] = amount;
+  // G.money оставляем суммой кошельков для совместимости с существующими итоговыми расчётами.
+  g.money = Object.values(g.wallets).reduce((sum, v) => sum + Math.max(0, Math.floor(Number(v) || 0)), 0);
+  return amount;
+}
+function addPlayerMoney(g, u, amount) {
+  return setPlayerMoney(g, u, playerMoney(g, u) + (Number(amount) || 0));
+}
+function addEnemy(g, enemy) {
+  if (!enemy) return enemy;
+  if (!Number.isSafeInteger(enemy.eid) || enemy.eid < 1) enemy.eid = g.enemyNid++;
+  else g.enemyNid = Math.max(g.enemyNid, enemy.eid + 1);
+  g.enemies.push(enemy);
+  return enemy;
+}
+function mkEnemy(kind, hp) {
+  const speed = {shield:0.75, stunner:1.5, normal:1, fast:2, tank:0.5, swarm:1, dasher:3, brute:0.5, boss:0.5, mini:0.5}[kind];
+  const cost = {shield:2, stunner:1, normal:1, fast:1, tank:2, swarm:1, dasher:1, brute:3, boss:99, mini:5}[kind];
+  hp = Math.max(1, Math.round(hp));
+  const en = {kind, hp, maxHp: hp, speed, pos: 0, prev: 0, cost, frozen: 0, armor: ARMOR[kind] || 0, isBoss: kind === "boss" || kind === "mini"};
+  if (kind === "stunner") { en.stunDur = STUN_FAST; en.stunCd = 0; en.stunCdMax = STUN_FAST_CD; } // стан 2с, кд 15с
+  return en;
+}
+function buildQueue(g, wave) {
+  const power = Math.max(1, g.hpBase) * g.hpMul * ENEMY_BUFF, K = HP_K / WAVE_F[0];
+  if (wave >= WAVES) {
+    const out = [], esc = power * K * waveF(WAVES - 1) * 0.6;
+    for (let i = 0; i < 4; i++) out.push(mkEnemy("fast", esc));
+    const boss = mkEnemy("boss", power * K * waveF(WAVES - 1) * BOSS_MULT);
+    if (g.diff && g.diff.stun) { boss.stunDur = STUN_BOSS; boss.stunCd = 0; }
+    boss.summon = {cd: SUMMON_BOSS.first, max: SUMMON_BOSS.every, n: SUMMON_BOSS.n, cap: SUMMON_BOSS.cap, k: 0, kinds: SUMMON_BOSS.kinds, unit: power * K * waveF(WAVES - 1) * SUMMON_BOSS.hpK, sh: 8};
+    out.push(null, null, boss);
+    return out;
+  }
+  const count = wave <= 10 ? 4 + wave * 2 : Math.min(g.diff.endless ? 90 : 60, 24 + Math.floor((wave - 10) * 1.1)), kinds = [], px = (wave - 1) / Math.max(1, WSCALE - 2);
+  for (let i = 0; i < count; i++) {
+    if (px >= 0.6 && i % 7 === 6) kinds.push("brute");
+    else if (px >= 0.32 && i % 5 === 4) kinds.push("tank");
+    else if (px >= 0.45 && i % 6 === 2) kinds.push("dasher");
+    else if (g.diff.stunner && px >= 0.2 && i % 10 === 7) kinds.push("stunner");
+    else if (px >= 0.25 && i % 9 === 5) kinds.push("shield");
+    else if (px >= 0.18 && i % 4 === 3) kinds.push("fast");
+    else if (px >= 0.08 && i % 3 === 1) kinds.push("swarm");
+    else kinds.push("normal");
+  }
+  const wm = {shield:2, stunner:0.8, normal:1, fast:0.6, tank:3, swarm:0.4, dasher:0.5, brute:5};
+  const total = kinds.reduce((a, k) => a + wm[k], 0);
+  const unit = power * K * waveF(wave);
+  const out = kinds.map(k => { const e = mkEnemy(k, unit * wm[k]); if (k === "shield") e.shield = SHIELD_HITS(Math.max(0, Math.min(1, px))); return e; });
+  if (g.diff && isMini(g, wave)) {
+    const mini = mkEnemy("mini", unit * 12);
+    mini.stunDur = STUN_MINI; mini.stunCd = 0;
+    mini.summon = {cd: SUMMON_MINI.first, max: SUMMON_MINI.every, n: SUMMON_MINI.n, cap: SUMMON_MINI.cap, k: 0, kinds: SUMMON_MINI.kinds, unit: unit * SUMMON_MINI.hpK, sh: SHIELD_HITS(Math.max(0, Math.min(1, px)))};
+    out.push(null, null, mini);
+  }
+  return out;
+}
+function startWave(g) {
+  g.wave += 1; g.queue = buildQueue(g, g.wave); g.waveTotal = g.queue.filter(Boolean).length;
+  g.queue.forEach(e => { if (e && !e.isBoss) e.dodge = g.map.dodge || 0; }); g.enemies = []; g.extra = []; g.tick = 0;
+  // Выжившие союзники возвращались к точке появления врагов только во время перерыва.
+  // С новой волной они снова должны искать врагов и вступать с ними в бой.
+  for (const a of g.allies) { a.returning = false; a.attackAcc = ALLY_ATTACK_CD; }
+  // Перезарядку призывателей не сбрасываем между волнами:
+  // она копится во время боя и продолжается в следующей волне.
+  g.log = "";
+  g.farmBonus = 0;
+  g.fx = [];
+}
+function hit(g, tower, target, mult) {
+  let dmg = Math.floor(rnd(Math.floor(tower.dmgMin), Math.floor(tower.dmgMax)) * (mult || 1));
+  const mut = tower.mutation; let note = "";
+  if (tower.rarity === "imbaogaggg") {
+    if (Math.random() < 0.15) {
+      dmg = target.isBoss ? Math.max(1, Math.floor(target.maxHp * 0.05)) : target.hp; note = "⚡";
+    } else if (!target.isBoss) dmg = Math.max(dmg, Math.floor(target.maxHp * 0.08));
+  }
+  if (mut === "Крут" && Math.random() < 0.20) { dmg = Math.floor(dmg * 1.5); note = "💥"; }
+  if (mut === "Админ") dmg = Math.floor(dmg * 1.2);
+  if (mut === "Богат") dmg = Math.floor(dmg * 1.1);
+  let extra = 0;
+  if (mut === "Сгоревшая") extra = Math.min(Math.floor(dmg / 2), Math.floor(target.maxHp * 0.05));
+  else if (mut === "Заражен" && Math.random() < 0.30) extra = Math.min(Math.floor(dmg / 2), Math.floor(target.maxHp * 0.08));
+  let total = dmg + extra;
+  if (target.armor) total = Math.floor(total * (1 - target.armor));
+  total = Math.max(1, total);
+  const raw = total; let blocked = false;
+  if (target.shield > 0) { target.shield -= 1; blocked = true; total = 0; } else {
+    target.hp -= total;
+    if (total > 0 && tower.owner != null) target.lastHitBy = tower.owner;
+  }
+  if (mut === "Заморожен" && !target.isBoss && Math.random() < 0.25) target.frozen = 1;
+  if (mut === "Хакер") {
+    tower.hits += 1;
+    if (tower.hits % 25 === 0 && g.lives < g.maxLives) { g.lives += 1; note = "💚"; }
+  }
+  return {note: blocked ? "🛡" : note, dmg: total, raw};
+}
+// Один ход. true — волна закончилась (или игра окончена).
+function step(g) {
+  g.tick += 1; g.fx = [];
+  for (const e of g.enemies) e.prev = e.pos;
+  for (const kS of Object.keys(g.placed)) {
+    const pl = g.placed[kS], tower = g.towers[g.placed[kS].t], R = towerR(tower, pl.lvl);
+    if (pl.stun > 0) { pl.stun -= 1; pl.acc = Math.min(pl.acc || 0, 1); continue; }
+    if (tower.summon) {
+      // КД призывателя: 30 секунд, на 5-м уровне — 25 секунд.
+      const summonCooldown = summonCd(pl.lvl);
+      pl.acc = pl.acc || 0;
+      if (pl.acc < 1) pl.acc = Math.min(1, pl.acc + TICK_SEC / summonCooldown + 1e-9);
+      if (pl.acc >= 1) {
+        const cap = summonN(tower, pl.lvl) * 2 + 2, mine = g.allies.filter(a => a.key === kS && !a.returning).length;
+        if (mine < cap) {
+          pl.acc = 0;
+          const n = Math.min(summonN(tower, pl.lvl), cap - mine), hp0 = summonHp(tower, pl.lvl);
+          for (let i = 0; i < n; i++) {
+            const pos = PATH_LEN - 0.45 * i;
+            g.allies.push({key: kS, tower, lvl: pl.lvl, pos, prev: pos, hp: hp0, maxHp: hp0, attackAcc: ALLY_ATTACK_CD});
+          }
+          g.fx.push({t: "call", from: pl, d: 0});
+        } else pl.acc = 1; // когда освободится место, призовёт сразу
+      }
+      continue;
+    }
+    // Фермы не атакуют и не запускают боевые анимации.
+    if (isFarmTower(tower)) continue;
+    const zone = g.enemies.filter(e => { if (e.hp <= 0) return false; const q = xy(e.pos); return (q[0] - pl.x) ** 2 + (q[1] - pl.y) ** 2 <= R * R; });
+    const cdv = towerCd(tower, pl.lvl);
+    if (!zone.length) { pl.acc = Math.min(1, (pl.acc || 0) + TICK_SEC / cdv); continue; }
+    const md = pl.target || 0, SUB = 5;
+    for (let j = 0; j < SUB; j++) {
+      // кулдаун считаем по реальному времени: ход = 5 долей, выстрел происходит ровно когда перезарядка набрана
+      pl.acc = (pl.acc || 0) + TICK_SEC / SUB / cdv;
+      if (!zone.some(e => e.hp > 0)) { pl.acc = Math.min(1, pl.acc); continue; }
+      let shots = Math.min(5, Math.floor(pl.acc + 1e-9)); pl.acc = Math.max(0, pl.acc - shots);
+      while (shots-- > 0) {
+        const z = zone.filter(e => e.hp > 0);
+        if (!z.length) break;
+        const target = z.reduce((a, b) => md === 1 ? (b.pos < a.pos ? b : a) : md === 2 ? (b.hp > a.hp ? b : a) : md === 3 ? (b.hp < a.hp ? b : a) : (b.pos > a.pos ? b : a));
+        if (target.dodge && Math.random() < target.dodge) { g.fx.push({t: "shot", from: pl, enemy: target, note: "💨", color: tower.color, d: j / SUB}); continue; }
+        const r = hit(g, tower, target, 1 + 0.4 * ((pl.lvl || 1) - 1));
+        if (target.hp <= 0 && target.dieD === undefined) target.dieD = j / SUB;
+        g.fx.push({t: "shot", from: pl, enemy: target, note: r.note, color: tower.color, d: j / SUB, dmg: r.dmg});
+        if (AOE_LVL[tower.rarity] && pl.lvl >= AOE_LVL[tower.rarity]) {
+          // враги двигаются в течение хода, а этот выстрел происходит на доле j/SUB хода:
+          // берём их позицию на этот момент (как на экране), а не на начало хода
+          const fr = j / SUB, posAt = (e, f) => xy(e.pos + (e.frozen > 0 ? 0 : e.speed) * f);
+          const tq = posAt(target, fr), cone = AOE_CONE[tower.rarity], ar = aoeR(tower, pl.lvl), ang = Math.atan2(tq[1] - pl.y, tq[0] - pl.x);
+          pl.aim = ang;
+          for (const e2 of g.enemies) {
+            if (e2 === target || e2.hp <= 0) continue;
+            // тело врага тоже считается (достаточно коснуться сектора), проверяем момент выстрела
+            // и чуть позже, пока сектор ещё виден на экране
+            const body = (LOOK[e2.kind] || LOOK.normal).s * 0.68;
+            let inside = false;
+            for (const f of [fr, Math.min(1, fr + 0.15)]) {
+              const q = posAt(e2, f), dx = q[0] - pl.x, dy = q[1] - pl.y, dist = Math.hypot(dx, dy);
+              if (dist - body > ar) continue;
+              let da = Math.atan2(dy, dx) - ang; da = Math.atan2(Math.sin(da), Math.cos(da));
+              if (Math.abs(da) <= cone.a + (dist > body ? Math.asin(body / dist) : Math.PI)) { inside = true; break; }
+            }
+            if (!inside) continue;
+            let ad = Math.max(1, Math.floor((r.raw || r.dmg) * AOE_F)); if (e2.kind === "shield") ad = Math.max(1, Math.floor(ad * SHIELD_AOE)); e2.hp -= ad; if (ad > 0 && tower.owner != null) e2.lastHitBy = tower.owner; g.fx.push({t: "hp", enemy: e2, dmg: ad, d: j / SUB}); if (e2.hp <= 0 && e2.dieD === undefined) e2.dieD = j / SUB;
+          }
+          g.fx.push({t: "cone", from: pl, ang, r: ar, a: cone.a, color: tower.color, d: j / SUB});
+        }
+      }
+    }
+  }
+  // стан: босс подходит к человечинке и оглушает ближайшую, потом кулдаун 10с
+  for (const e of g.enemies) {
+    if (!e.stunDur || e.hp <= 0) continue;
+    if (e.stunCd > 0) { e.stunCd -= 1; continue; }
+    let best = null, bd = STUN_RANGE * STUN_RANGE;
+    // быстрый враг за ход проходит больше клетки — проверяем несколько точек пути, чтобы не проскочить мимо юнита
+    for (const fq of (e.speed > 1 ? [0, 0.5] : [0])) {
+      const q = xy(e.pos + (e.frozen > 0 ? 0 : e.speed) * fq);
+      for (const kS of Object.keys(g.placed)) {
+        const p = g.placed[kS]; if (p.stun > 0) continue;
+        const d = (p.x - q[0]) ** 2 + (p.y - q[1]) ** 2;
+        if (d <= bd) { bd = d; best = p; }
+      }
+    }
+    if (best) { best.stun = e.stunDur; e.stunCd = e.stunCdMax || STUN_CD; g.fx.push({t: "stun", enemy: e, to: best}); }
+  }
+  // призыв: босс выпускает прислужников у себя за спиной, пока не набрался лимит живых
+  for (const e of g.enemies.slice()) {
+    const sm = e.summon; if (!sm || e.hp <= 0) continue;
+    if (sm.cd > 0) { sm.cd -= 1; continue; }
+    const room = sm.cap - g.enemies.filter(x => x.owner === e && x.hp > 0).length;
+    if (room <= 0) continue;
+    for (let i = 0; i < Math.min(sm.n, room); i++) {
+      const kd = sm.kinds[sm.k++ % sm.kinds.length], m = mkEnemy(kd, sm.unit * (SUMMON_WM[kd] || 1));
+      if (kd === "shield") m.shield = sm.sh;
+      m.owner = e; m.pos = m.prev = Math.max(0, e.pos - 0.3 - 0.35 * i); m.dodge = g.map.dodge || 0;
+      addEnemy(g, m);
+    }
+    sm.cd = sm.max; g.fx.push({t: "summon", enemy: e, d: 0});
+  }
+  // Дальняя атака призванных: выбирают ближайшего врага впереди в радиусе 5 клеток.
+  // На расстоянии наносится обычный урон призывателя раз в 3 секунды; HP союзника не тратится.
+  // При отсутствии цели союзник продолжает идти навстречу врагам.
+  for (const a of g.allies) {
+    a.prev = a.pos;
+    if (a.returning) { a.pos -= 1; continue; }
+
+    let target = null, bestGap = Infinity;
+    for (const e of g.enemies) {
+      if (e.hp <= 0) continue;
+      const gap = a.pos - e.pos; // положительное значение: враг впереди по маршруту
+      if (gap < -ALLY_CONTACT_GAP || gap > ALLY_ATTACK_RANGE) continue;
+      if (gap < bestGap) { bestGap = gap; target = e; }
+    }
+
+    if (!target) {
+      a.pos -= 1;
+      a.attackAcc = ALLY_ATTACK_CD; // при появлении цели первый выстрел уже готов
+      continue;
+    }
+
+    // Союзник останавливается в радиусе атаки. Первая атака — сразу, далее раз в 3 секунды.
+    a.attackAcc = Math.min(ALLY_ATTACK_CD, (a.attackAcc === undefined ? ALLY_ATTACK_CD : a.attackAcc) + TICK_SEC);
+    if (a.attackAcc >= ALLY_ATTACK_CD) {
+      a.attackAcc -= ALLY_ATTACK_CD;
+      if (target.dodge && Math.random() < target.dodge) {
+        const q = xy(a.pos);
+        g.fx.push({t: "shot", from: {x: q[0], y: q[1]}, enemy: target, note: "💨", color: a.tower.color, d: 0.1, dmg: 0});
+      } else {
+        const q = xy(a.pos), r = hit(g, a.tower, target, 1 + 0.4 * ((a.lvl || 1) - 1));
+        if (target.hp <= 0 && target.dieD === undefined) target.dieD = 0;
+        g.fx.push({t: "shot", from: {x: q[0], y: q[1]}, enemy: target, note: r.note, color: a.tower.color, d: 0.1, dmg: r.dmg});
+      }
+    }
+  }
+
+  // Враги продолжают движение независимо от союзников — никакой остановки перед ними.
+  for (const e of g.enemies) {
+    if (e.hp <= 0) continue;
+    if (e.frozen > 0) e.frozen -= 1; else e.pos += e.speed;
+  }
+
+  // Физический контакт проверяем отдельно после движения. Если пути пересеклись за один ход,
+  // сравниваем HP один раз: проигравший погибает, победитель теряет HP проигравшего.
+  for (const a of g.allies) {
+    if (a.returning || a.hp <= 0) continue;
+    const contacts = [];
+    for (const e of g.enemies) {
+      if (e.hp <= 0) continue;
+      const gapBefore = a.prev - e.prev;
+      const gapAfter = a.pos - e.pos;
+      if (gapBefore >= -ALLY_CONTACT_GAP && gapAfter <= ALLY_CONTACT_GAP) {
+        const span = gapBefore - gapAfter;
+        const when = span > 1e-9 ? Math.max(0, Math.min(1, (gapBefore - ALLY_CONTACT_GAP) / span)) : 0;
+        contacts.push({enemy: e, when});
+      }
+    }
+    contacts.sort((x, y) => x.when - y.when);
+    for (const hitTest of contacts) {
+      const e = hitTest.enemy;
+      if (a.hp <= 0 || e.hp <= 0) continue;
+      const allyHp = Math.max(0, Math.floor(a.hp));
+      const enemyHp = Math.max(0, Math.floor(e.hp));
+      if (a.tower && a.tower.owner != null) e.lastHitBy = a.tower.owner;
+      if (allyHp <= enemyHp) {
+        a.hp = 0;
+        e.hp = enemyHp - allyHp;
+      } else {
+        e.hp = 0;
+        a.hp = allyHp - enemyHp;
+      }
+      if (e.hp <= 0 && e.dieD === undefined) e.dieD = 0;
+      const contactPos = a.prev + (a.pos - a.prev) * hitTest.when;
+      const q = xy(contactPos);
+      g.fx.push({t: "clash", enemy: e, to: {x: q[0], y: q[1]}, d: 0,
+                 enemyDmg: Math.round(allyHp), allyDmg: Math.round(enemyHp)});
+    }
+  }
+  g.allies = g.allies.filter(a => a.hp > 0 && a.pos > 0);
+
+  // Удаляем погибших после ranged-hit и после столкновения, начисляя награды один раз.
+  const dead = g.enemies.filter(e => e.hp <= 0);
+  if (dead.length) {
+    g.kills += dead.length;
+    for (const e of dead) {
+      if (e.dieD > 0 && !(e.frozen > 0)) e.pos = Math.min(PATH_LEN, e.pos + e.speed);
+      g.fx.push({t: "die", pos: e.pos, kind: e.kind, d: e.dieD || 0, e});
+      const reward = Math.round((REWARD[e.kind] || 5) * g.gold * (e.owner ? 0.5 : 1));
+      // в коопе награда за убийство идёт каждому игроку, кто бы ни добил
+      if (g.coop && g.coop.players && g.coop.players.length) { for (const pl of g.coop.players) addPlayerMoney(g, pl.u, reward); }
+      else addPlayerMoney(g, e.lastHitBy, reward);
+    }
+    g.enemies = g.enemies.filter(e => e.hp > 0);
+  }
+  for (const e of g.enemies) if (e.kind === "boss" && e.hp > 0) e.hp = Math.min(e.maxHp, e.hp + Math.floor(e.maxHp * (g.diff && g.diff.bossRegen != null ? g.diff.bossRegen : BOSS_REGEN)));
+  let breached = 0; const alive = [];
+  for (const e of g.enemies) {
+    if (e.pos >= PATH_LEN) { g.lives -= e.cost; breached += 1; } else alive.push(e);
+  }
+  g.enemies = alive;
+  if (g.queue.length) { const n = g.queue.shift(); if (n) addEnemy(g, n); }
+  // скипнутые волны идут поверх: у каждой своя очередь, из каждой выходит по одному врагу за ход
+  for (const xq of g.extra) if (xq.length) { const n = xq.shift(); if (n) addEnemy(g, n); }
+  g.extra = g.extra.filter(xq => xq.length);
+  const parts = [];
+  if (breached) parts.push("💔 " + breached);
+  g.log = parts.join("  ");
+  if (g.lives <= 0) { g.lives = 0; g.over = "lose"; return true; }
+  const fin = g.queue.length === 0 && g.extra.length === 0 && g.enemies.length === 0;
+  if (fin) {
+    // Союзники возвращаются в перерыве; выплату делаем в waveDone(),
+    // когда игра действительно переключается на следующую волну.
+    for (const a of g.allies) a.returning = true;
+  }
+  return fin;
+}
+// ==ENGINE END==
+
+// ─── данные игрока (из URL ?d=...) ───
+const RARITY_KEYS = ["common","rare","epic","legendary","mythic","secret","special","godly","imbaogaggg","halloween"];
+const MUT_KEYS = ["Сгоревшая","Заражен","Крут","Богат","Заморожен","Админ","Хакер"];
+const R_EMOJI = {halloween:"🎃", common:"⚪", rare:"🔵", epic:"🟣", legendary:"🟡", mythic:"🔴", secret:"⚫", special:"✨", godly:"💠", imbaogaggg:"⚡"};
+const R_COLOR = {halloween:"#ff8a1f", common:"#c8ccd8", rare:"#4aa3ff", epic:"#b86cff", legendary:"#ffc83d", mythic:"#ff5d6c", secret:"#15151b", special:"#5de0e6", godly:"#6cf0ff", imbaogaggg:"#ffe14a"};
+
+// ── Хэллоуин-человечинки — призыватели: сами не стреляют, а шлют из базы маленьких «обычных» человечинок ──
+// союзники идут навстречу врагам, стреляют на расстоянии и мгновенно сравнивают HP при контакте
+const SUMMONERS = [
+  [/^босс\s*зомби/i, {cd:18, n:1, hp:1000, dmgMin:6000, dmgMax:9000}],
+  [/^зомби/i,          {cd:18, n:1, hp:1000, dmgMin:2500, dmgMax:3500}],
+  [/^вампир/i,         {cd:18, n:1, hp:1000, dmgMin:1000, dmgMax:1500}],
+  [/^тыкв/i,           {cd:18, n:1, hp:1000, dmgMin:400,  dmgMax:600}]
+];
+const MAX_SUMMONERS = 3; // сколько призывающих можно держать на поле одновременно
+function fixSummoner(t) {
+  let sm = null; for (const [re, cfg] of SUMMONERS) if (re.test(t.name)) { sm = cfg; break; }
+  if (!sm && t.rarity === "halloween") sm = SUMMONERS[2][1];
+  if (!sm) return t;
+  return Object.assign({}, t, {rarity: "halloween", emoji: R_EMOJI.halloween, color: R_COLOR.halloween, summon: sm, dmgMin: sm.dmgMin, dmgMax: sm.dmgMax});
+}
+function decodeData() {
+  try {
+    const d = new URLSearchParams(location.search).get("d");
+    if (!d) return null;
+    let b = d.replace(/-/g, "+").replace(/_/g, "/");
+    while (b.length % 4) b += "=";
+    const bin = atob(b), bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const arr = JSON.parse(new TextDecoder("utf-8").decode(bytes));
+    return mapItems(arr);
+  } catch (e) { return null; }
+}
+function mapItems(arr) {
+  return arr.map(a => {
+    const rarity = RARITY_KEYS[a[1]] || "common";
+    return {img: a[5] != null ? +a[5] : null, name: String(a[0]), rarity, dmgMin: +a[2], dmgMax: +a[3], mutation: MUT_KEYS[a[4]] || null, hp: a[6] != null ? +a[6] : 0,
+            count: a[7] != null ? +a[7] : 1, emoji: R_EMOJI[rarity], color: R_COLOR[rarity]};
+  }).filter(t => t.dmgMax > 0);
+}
+function demoData() {
+  const DHP = {godly:90000, secret:40000, mythic:15000, legendary:6000, epic:2500, rare:1000, common:300, imbaogaggg:800, halloween:500};
+  const mk = (n, r, a, b, m) => ({hp: DHP[r] || 500, img: null, name: n, rarity: r, dmgMin: a, dmgMax: b, mutation: m || null, emoji: R_EMOJI[r], color: R_COLOR[r]});
+  return [mk("Демо-годли","godly",6000,9000), mk("Демо-секрет","secret",2500,4000,"Крут"), mk("Демо-мифик","mythic",1000,1700,"Сгоревшая"),
+          mk("Демо-легенда","legendary",450,750), mk("Демо-эпик","epic",180,300,"Заморожен"), mk("Демо-редкий","rare",60,110),
+          mk("Демо-обычный","common",12,22), mk("Демо-имба","imbaogaggg",1,3), mk("Тыква","halloween",1,3)];
+}
+
+const tg = window.Telegram && window.Telegram.WebApp;
+if (tg) {
+  try { tg.ready(); tg.expand(); tg.setHeaderColor && tg.setHeaderColor("#0f1220"); tg.setBackgroundColor && tg.setBackgroundColor("#0f1220");
+        tg.disableVerticalSwipes && tg.disableVerticalSwipes(); } catch (e) {}
+}
+const haptic = () => {}; // вибрация («тряска») отключена
+const $ = id => document.getElementById(id);
+// Разрешённые адреса сервера для параметра ?o=. Впишите сюда свой домен(ы) бота, например "https://bot.example.com".
+const ALLOWED_ORIGINS = ["https://wbxtrk9iv2.apps.bot-hosting.cloud"];
+const IMG_BASE = (() => {
+  const o = new URLSearchParams(location.search).get("o");
+  if (o) { try { const u = new URL(o); if (u.protocol === "https:" && (u.origin === location.origin || ALLOWED_ORIGINS.includes(u.origin))) return u.origin; } catch (e) {} }
+  return location.origin.replace(/\/$/, "");
+})();
+const IMGS = {};
+const imgUrl = t => IMG_BASE + "/ttdimg?i=" + t.img;
+function timg(t) {
+  if (t.img == null) return null;
+  let im = IMGS[t.img];
+  if (!im) { im = IMGS[t.img] = new Image(); im.tries = 0;
+    im.onerror = () => { im.bad = true; if (im.tries++ < 3) setTimeout(() => { im.bad = false; im.src = imgUrl(t) + "&r=" + im.tries; }, 1500 * im.tries); };
+    im.src = imgUrl(t); }
+  return im.complete && im.naturalWidth && !im.bad ? im : null;
+}
+function setEm(el, t) {
+  el.textContent = "";
+  if (t.img == null) { el.textContent = t.emoji; return; }
+  const i = document.createElement("img"); i.loading = "lazy"; i.src = imgUrl(t); i.style.cssText = "width:100%;height:100%;object-fit:cover;border-radius:50%;display:block";
+  i.onerror = () => { el.textContent = t.emoji; }; el.appendChild(i);
+}
+
+// ─── экран выбора ───
+let cands = decodeData(), demo = false;
+if (!cands || !cands.length) { cands = demoData(); demo = true; }
+cands = cands.map(fixSummoner);
+let picked = [], pickQ = "";
+// Инвентарь из ?d= в URL можно подделать. Внутри Telegram игра стартует только после загрузки инвентаря с сервера.
+let invVerified = false;
+function needInv() {
+  if (demo || !tg || !tg.initData || invVerified) return false;
+  const m = "Загружаем инвентарь с сервера… попробуйте через пару секунд.";
+  try { tg.showAlert ? tg.showAlert(m) : alert(m); } catch (e) {}
+  loadFullInventory();
+  return true;
+}
+// ── запоминание выбора человечинок (по имени/урону/мутации, а не по индексу) ──
+const unitKey = u => u.name + "|" + u.dmgMin + "|" + u.dmgMax + "|" + (u.mutation || "");
+const SQUAD_KEY = "ttd_squad_" + ((tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) || "guest");
+function savePicked() { if (demo) return; try { localStorage.setItem(SQUAD_KEY, JSON.stringify(picked.map(i => unitKey(cands[i])))); } catch (e) {} }
+function loadSavedKeys() { try { const a = JSON.parse(localStorage.getItem(SQUAD_KEY) || "[]"); return Array.isArray(a) ? a.filter(x => typeof x === "string") : []; } catch (e) { return []; } }
+function restorePicked(keys) {
+  picked = [];
+  keys.forEach(k => { if (picked.length >= MAX_SQUAD) return; const i = cands.findIndex((u, j) => unitKey(u) === k && !picked.includes(j)); if (i >= 0) picked.push(i); });
+}
+if (!demo) restorePicked(loadSavedKeys());
+function renderPick() {
+  $("pick-sub").textContent = (demo ? "Демо-режим (данные игрока не переданы). " : "") +
+    "Выберите до " + MAX_SQUAD + " человечинок (" + picked.length + "/" + MAX_SQUAD + "). Урон взят из дуэлей." + (cands.length > 8 ? " Всего в инвентаре: " + cands.length + "." : "");
+  const list = $("list"); list.innerHTML = "";
+  cands.forEach((t, i) => {
+    if (pickQ && !t.name.toLowerCase().includes(pickQ)) return;
+    const d = document.createElement("div");
+    d.className = "card" + (picked.includes(i) ? " sel" : "");
+    const note = t.mutation && MUT_NOTES[t.mutation] ? " · " + MUT_NOTES[t.mutation] : "";
+    d.innerHTML = '<div class="em"></div><div><div class="nm"></div><div class="st"></div></div><div class="ck"></div>';
+    setEm(d.querySelector(".em"), t);
+    d.querySelector(".nm").textContent = t.name + (t.count > 1 ? " ×" + t.count : "");
+    d.querySelector(".st").textContent = (isFarmTower(t) ? "🏦 Ферма · +" + farmIncome(1) + " за волну" : "⚔ " + t.dmgMin + "–" + t.dmgMax + " · 🎯 " + towerRange(t)) + " · 💰" + towerCost(t) + note;
+    d.querySelector(".ck").textContent = picked.includes(i) ? "✅" : "";
+    d.onclick = () => {
+      const k = picked.indexOf(i);
+      if (k >= 0) picked.splice(k, 1); else if (picked.length < MAX_SQUAD) picked.push(i); else return;
+      savePicked(); haptic(); renderPick();
+    };
+    list.appendChild(d);
+  });
+  $("go").textContent = "✔ Готово (" + picked.length + ")";
+}
+// весь инвентарь: ссылка из Telegram вмещает только ~20 бойцов, остальных берём у бота по подписанному initData
+async function loadFullInventory() {
+  if (demo || !tg || !tg.initData) return;
+  try {
+    const resp = await fetch(IMG_BASE + "/ttdinv", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({initData: tg.initData})});
+    const j = await resp.json().catch(() => ({}));
+    if (!resp.ok || !j.ok || !Array.isArray(j.items)) return;
+    const full = mapItems(j.items).map(fixSummoner);
+    if (!full.length) return;
+    invVerified = true;
+    const keep = picked.map(i => unitKey(cands[i]));
+    cands = full;
+    restorePicked(keep.length ? keep : loadSavedKeys());
+    savePicked();
+    renderPick(); renderMenu();
+  } catch (e) {}
+}
+$("pick-q").oninput = e => { pickQ = e.target.value.trim().toLowerCase(); renderPick(); };
+loadFullInventory();
+
+// ─── карты (дизайн-координаты 360×430) ───
+const DW = 560, DH = 400;
+const SKIN = {shield:"👾",stunner:"👾",normal:"👾",fast:"👾",tank:"👾",swarm:"👾",dasher:"👾",brute:"👾",boss:"👾"};
+// дорога задаётся ломаной со срезанными углами; клетки (шаги врагов) берутся вдоль неё через равные промежутки
+function chamfer(pts, r) {
+  const out = [pts[0]];
+  const toward = (p, q, d) => { const L = Math.hypot(q[0] - p[0], q[1] - p[1]); d = Math.min(d, L / 2); return [p[0] + (q[0] - p[0]) * d / L, p[1] + (q[1] - p[1]) * d / L]; };
+  for (let i = 1; i < pts.length - 1; i++) out.push(toward(pts[i], pts[i - 1], r), toward(pts[i], pts[i + 1], r));
+  out.push(pts[pts.length - 1]); return out;
+}
+function trail(pts, step, first) {
+  const segs = []; let total = 0;
+  for (let i = 0; i < pts.length - 1; i++) { const L = Math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]); segs.push([pts[i], pts[i + 1], L]); total += L; }
+  const cells = [];
+  for (let d = first; d < total - 40; d += step) {
+    let acc = 0;
+    for (const [p, q, L] of segs) { if (d <= acc + L) { const t = (d - acc) / L; cells.push([Math.round(p[0] + (q[0] - p[0]) * t), Math.round(p[1] + (q[1] - p[1]) * t)]); break; } acc += L; }
+  }
+  return cells;
+}
+function mkMap(o) {
+  const road = chamfer(o.pts, o.r);
+  const segD = (x, y) => { let m = 1e9; for (let i = 0; i < road.length - 1; i++) { const [ax, ay] = road[i], [bx, by] = road[i + 1], dx = bx - ax, dy = by - ay, L2 = dx * dx + dy * dy || 1; const t = Math.max(0, Math.min(1, ((x - ax) * dx + (y - ay) * dy) / L2)); m = Math.min(m, Math.hypot(x - ax - dx * t, y - ay - dy * t)); } return m; };
+  const deco = []; let sd = o.root * 7 + 13; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+  for (let n = 0; n < 160 && deco.length < 14 && o.deco; n++) { const x = 20 + rnd() * (DW - 40), y = 20 + rnd() * (DH - 40); if (segD(x, y) > 33) deco.push([Math.round(x), Math.round(y), 14 + Math.round(rnd() * 10)]); }
+  return Object.assign(o, {road, decoPts: deco, decoEmoji: o.deco, cells: trail(road, o.step, 70), entry: road[0], base: road[road.length - 1], skin: SKIN});
+}
+const MAPS = [
+  mkMap({name:"🌿 Змейка", r:60, step:90, bg0:"#14301f", bg1:"#0b1c12", root:220, road0:"#4a3b22", road1:"#6d5a34", deco:"🌿",
+    pts:[[-25,55],[480,55],[480,155],[80,155],[80,255],[480,255],[480,355],[190,355]]}),
+  mkMap({name:"🏜 Зигзаг", r:14, step:76, bg0:"#33260f", bg1:"#1f1608", root:196, road0:"#6a4e22", road1:"#9a7536", deco:"🌵",
+    pts:[[-25,50],[40,50],[90,350],[185,350],[235,50],[330,50],[380,350],[475,350],[525,50],[525,235]]}),
+  mkMap({name:"🌀 Спираль", r:30, step:112, dodge:0.2, bg0:"#1d1230", bg1:"#120a20", root:247, road0:"#3b2a66", road1:"#5a44a0", deco:"✨",
+    pts:[[-25,40],[520,40],[520,360],[40,360],[40,115],[440,115],[440,285],[120,285],[120,200],[300,200]]}),
+  mkMap({name:"❄️ Перекрёсток", r:30, step:86, bg0:"#0f2a3d", bg1:"#08161f", root:131, road0:"#2a4559", road1:"#5f8fae", deco:"❄️",
+    pts:[[-25,55],[500,55],[500,200],[60,200],[60,345],[290,345],[290,125]]})
+];
+function setMap(m) { CELLS = m.cells; PATH_LEN = m.cells.length; SEQ = [m.entry].concat(m.cells, [m.base]); Object.assign(ENEMY_EMOJI, m.skin); }
+setMap(MAPS[0]);
+function xy(p) {
+  const s = Math.max(0, Math.min(SEQ.length - 1.0001, p + 0.5)), i = Math.floor(s), f = s - i;
+  return [SEQ[i][0] + (SEQ[i + 1][0] - SEQ[i][0]) * f, SEQ[i][1] + (SEQ[i + 1][1] - SEQ[i][1]) * f];
+}
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const ROAD_BLOCK = 21; // дорога шириной 50 (полуширина 25): ближе 21 px к её оси ставить нельзя, лёгкое наложение на край — можно
+function roadDist(x, y) { let m = 1e9; const rd = G.map.road; for (let i = 0; i < rd.length - 1; i++) { const ax = rd[i][0], ay = rd[i][1], dx = rd[i + 1][0] - ax, dy = rd[i + 1][1] - ay, L2 = dx * dx + dy * dy || 1; const t = Math.max(0, Math.min(1, ((x - ax) * dx + (y - ay) * dy) / L2)); m = Math.min(m, Math.hypot(x - ax - dx * t, y - ay - dy * t)); } return m; }
+const onRoad = (x, y) => roadDist(x, y) < ROAD_BLOCK;
+
+// ─── звук и музыка (WebAudio, без файлов) ───
+let AC = null, master = null, muted = false, musT = null, musStep = 0;
+function audio() {
+  if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); master = AC.createGain(); master.gain.value = muted ? 0 : 0.9; master.connect(AC.destination); delayIn = AC.createGain(); const dl = AC.createDelay(1), fb = AC.createGain(), lpf = AC.createBiquadFilter(); dl.delayTime.value = 0.3; fb.gain.value = 0.32; lpf.type = "lowpass"; lpf.frequency.value = 2500; delayIn.connect(dl); dl.connect(lpf); lpf.connect(fb); fb.connect(dl); lpf.connect(master); } catch (e) {} }
+  if (AC && AC.state === "suspended") AC.resume();
+  return AC;
+}
+function tone(f, d, type, vol, when, slide) {
+  if (!AC) return;
+  vol *= sfxBoost;
+  const t = AC.currentTime + (when || 0), o = AC.createOscillator(), g = AC.createGain();
+  o.type = type || "square"; o.frequency.setValueAtTime(f, t);
+  if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(20, slide), t + d);
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + d);
+  o.connect(g); g.connect(master); o.start(t); o.stop(t + d + 0.02);
+}
+const SFX = {
+  shot: () => tone(700, .07, "square", .04, 0, 300), die: () => tone(300, .2, "sawtooth", .06, 0, 60),
+  breach: () => tone(120, .4, "sawtooth", .14, 0, 50), tap: () => tone(900, .04, "sine", .06),
+  place: () => { tone(500, .08, "triangle", .12); tone(750, .1, "triangle", .12, .07); },
+  wave: () => [392, 523, 659].forEach((f, i) => tone(f, .15, "square", .07, i * .1)),
+  win: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, .25, "triangle", .15, i * .15)),
+  chat: () => [880, 1175].forEach((f, i) => tone(f, .12, "sine", .1, i * .09)),
+  lose: () => [330, 262, 196, 131].forEach((f, i) => tone(f, .3, "sawtooth", .1, i * .2))
+};
+function sfx(n) { if (!muted && AC && SFX[n]) { sfxBoost = 3.2; SFX[n](); sfxBoost = 1; } }
+// iOS/Telegram: звук WebAudio молчит при беззвучном режиме и до первого касания — «будим» его тихим <audio> и resume()
+let silentEl = null;
+let customPrimed = false;
+function primeMusic() {
+  const c = $("custom-track"); if (!c || customBad || !c.paused) return;
+  const live = G && (phase === "build" || phase === "run");
+  if (live && !muted) { c.muted = false; c.volume = MUSIC_VOL; c.play().catch(() => {}); return; }
+  if (customPrimed) return; customPrimed = true; c.muted = true;
+  const p = c.play();
+  if (p && p.then) p.then(() => { if (!(G && (phase === "build" || phase === "run"))) { c.pause(); c.currentTime = 0; } c.muted = false; }).catch(() => { c.muted = false; customPrimed = false; });
+}
+function unlockAudio() {
+  audio(); primeMusic();
+  if (!silentEl) {
+    try {
+      const n = 4000, b = new Uint8Array(44 + n), dv = new DataView(b.buffer);
+      const w = (o, s) => [...s].forEach((c, i) => dv.setUint8(o + i, c.charCodeAt(0)));
+      w(0, "RIFF"); dv.setUint32(4, 36 + n, true); w(8, "WAVE"); w(12, "fmt "); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+      dv.setUint32(24, 8000, true); dv.setUint32(28, 8000, true); dv.setUint16(32, 1, true); dv.setUint16(34, 8, true); w(36, "data"); dv.setUint32(40, n, true);
+      b.fill(128, 44);
+      silentEl = new Audio(URL.createObjectURL(new Blob([b], {type: "audio/wav"}))); silentEl.loop = true; silentEl.volume = 0.02;
+    } catch (e) {}
+  }
+  if (silentEl && silentEl.paused) silentEl.play().catch(() => {});
+}
+["pointerdown", "touchend", "click"].forEach(ev => document.addEventListener(ev, unlockAudio, {passive: true}));
+document.addEventListener("visibilitychange", () => { if (!document.hidden && AC && AC.state !== "running") AC.resume(); });
+let customBad = false;   // если mp3 не нашёлся — играем встроенную синтетическую музыку
+{ const ct = document.getElementById("custom-track"); if (ct) ct.addEventListener("error", () => { customBad = true; if (G && (phase === "build" || phase === "run")) music(true); }); }
+let noiseBuf = null, delayIn = null;
+const mtof = m => 440 * Math.pow(2, (m - 69) / 12);
+function noise(d, vol, hp, when) {
+  if (!AC) return;
+  if (!noiseBuf) { noiseBuf = AC.createBuffer(1, AC.sampleRate * 0.5, AC.sampleRate); const a = noiseBuf.getChannelData(0); for (let i = 0; i < a.length; i++) a[i] = Math.random() * 2 - 1; }
+  const t = AC.currentTime + (when || 0), s = AC.createBufferSource(), f = AC.createBiquadFilter(), g = AC.createGain();
+  s.buffer = noiseBuf; f.type = "highpass"; f.frequency.value = hp; g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + d);
+  s.connect(f); f.connect(g); g.connect(master); s.start(t); s.stop(t + d + 0.02);
+}
+// синт-голос: несколько расстроенных осцилляторов -> фильтр -> огибающая (+эхо)
+function voice(m, d, o, when) {
+  if (!AC) return;
+  const t = AC.currentTime + (when || 0), g = AC.createGain(), lp = AC.createBiquadFilter(), f = mtof(m), top = o.lp || 2500;
+  lp.type = "lowpass"; lp.frequency.setValueAtTime(top, t); lp.frequency.exponentialRampToValueAtTime(Math.max(250, top * 0.3), t + d);
+  g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(o.vol, t + (o.att || 0.01)); g.gain.setValueAtTime(o.vol, t + Math.max(o.att || 0.01, d * 0.6)); g.gain.exponentialRampToValueAtTime(0.001, t + d);
+  for (const dt of (o.det || [0])) { const os = AC.createOscillator(); os.type = o.type || "sawtooth"; os.frequency.value = f; os.detune.value = dt; os.connect(lp); os.start(t); os.stop(t + d + 0.05); }
+  lp.connect(g); g.connect(master);
+  if (o.send && delayIn) { const s = AC.createGain(); s.gain.value = o.send; g.connect(s); s.connect(delayIn); }
+}
+function kick(w, v) { tone(155, .14, "sine", v, w, 42); noise(.02, v * 0.25, 3000, w); }
+function snare(w, v) { noise(.16, v, 1800, w); tone(190, .09, "triangle", v * 0.7, w, 120); }
+// Мелодия на 8 тактов (ля минор, 150 BPM): число — нота MIDI, 0 — пауза, -1 — тянуть предыдущую
+const LEAD = [
+  [76,-1,0,76, 79,-1,76,0, 74,-1,72,0, 74,-1,-1,-1], [72,-1,0,72, 77,-1,72,0, 69,-1,72,0, 77,-1,-1,-1],
+  [76,-1,0,76, 79,-1,84,0, 83,-1,79,0, 76,-1,-1,-1], [74,-1,0,74, 79,-1,74,0, 71,-1,74,0, 79,-1,-1,-1],
+  [81,-1,0,81, 79,-1,76,0, 79,-1,81,0, 84,-1,-1,-1], [77,-1,0,77, 72,-1,76,0, 77,-1,72,0, 69,-1,-1,-1],
+  [79,-1,0,79, 83,-1,79,0, 74,-1,79,0, 83,-1,86,-1], [83,-1,0,80, 76,-1,80,0, 83,-1,80,0, 76,-1,-1,-1]
+];
+const BASSR = [45, 41, 48, 43, 45, 41, 43, 40];
+const CHORDS = [[57,60,64],[53,57,60],[55,60,64],[55,59,62],[57,60,64],[53,57,60],[55,59,62],[52,56,59]];
+const BASSP = {0:0, 2:0, 4:0, 6:12, 8:0, 10:0, 12:0, 14:7};
+function music(on) {
+  clearInterval(musT); musT = null;
+  const custom = $("custom-track");
+  if (custom && custom.src && !customBad) {
+    if (!on) { custom.pause(); custom.currentTime = 0; return; }
+    custom.muted = false; custom.volume = muted ? 0 : MUSIC_VOL;
+    custom.play().catch(() => { if (custom.error || custom.networkState === 3) { customBad = true; music(true); } });
+    return;
+  }
+  if (!on || !audio()) return;
+  const sh = G ? Math.round(12 * Math.log2(G.map.root / 220)) : 0, STEP = 0.1;
+  let nextT = AC.currentTime + 0.1; musStep = 0;
+  const plan = (n, w) => {
+    const s = n % 16, bar = Math.floor(n / 16) % 8, hot = phase === "run", ch = CHORDS[bar];
+    if (s === 0) ch.forEach(m => voice(m + sh, STEP * 15, {type: "triangle", vol: hot ? 0.035 : 0.05, att: 0.15, lp: 1800, det: [-5, 5]}, w));
+    if (hot ? s % 4 === 0 || (bar % 2 === 1 && s === 14) : s === 0 || s === 8) kick(w, hot ? 0.24 : 0.12);
+    if (hot && (s === 4 || s === 12)) snare(w, 0.11);
+    if (hot && bar === 7 && s >= 12) snare(w, 0.05 + (s - 12) * 0.02);
+    if (s === 14 && hot) noise(.12, .035, 7500, w); else if (s % 2 === 1) noise(.035, hot ? .05 : .025, 8000, w); else if (hot) noise(.025, .02, 9000, w);
+    if (hot) { if (s % 2 === 0) voice(BASSR[bar] + sh + (BASSP[s] || 0), STEP * 1.8, {vol: 0.1, lp: 700, det: [0, -8]}, w); }
+    else if (s % 8 === 0) voice(BASSR[bar] + sh, STEP * 7, {type: "triangle", vol: 0.08, lp: 500}, w);
+    if (hot) {
+      const v = LEAD[bar][s];
+      if (v > 0) { let len = 1; while (s + len < 16 && LEAD[bar][s + len] === -1) len++; voice(v + sh, STEP * len * 0.95, {vol: 0.045, lp: 3200, att: 0.012, det: [-7, 7], send: 0.35}, w); }
+    } else if (s % 2 === 0) voice(ch[[0, 1, 2, 1][(s / 2) % 4]] + 12 + sh, STEP * 3, {type: "triangle", vol: 0.04, lp: 2200, send: 0.3}, w);
+  };
+  musT = setInterval(() => {
+    if (muted || paused) { nextT = AC.currentTime + 0.1; return; }
+    while (nextT < AC.currentTime + 0.25) { plan(musStep, Math.max(0, nextT - AC.currentTime)); musStep++; nextT += STEP; }
+  }, 40);
+}
+
+// ─── состояние игры ───
+let G = null, phase = "pick", holding = null, inspect = null, cursor = null, diffI = 1, mapI = 0, paused = false, speedIdx = 0;
+const SPEEDS = [750, 380, 220];
+let lastTick = 0, lastAllyHomeTick = 0, tickMs = SPEEDS[0];
+const cv = $("cv"), ctx = cv.getContext("2d");
+let cssW = 360, dpr = 1;
+function resize() {
+  const wrap = $("cv-wrap");
+  const w = Math.min(wrap.clientWidth, wrap.clientHeight * DW / DH) || 360;
+  dpr = window.devicePixelRatio || 1; cssW = w;
+  cv.style.width = w + "px"; cv.style.height = (w * DH / DW) + "px";
+  cv.width = Math.round(w * dpr); cv.height = Math.round(w * DH / DW * dpr);
+}
+window.addEventListener("resize", resize);
+{ let bh = 0; new ResizeObserver(es => { const h = Math.round(es[0].contentRect.height); if (h !== bh) { bh = h; resize(); } }).observe(document.querySelector("#s-game .bar")); }
+
+const bestKey = () => "ttd_best_" + mapI;
+const getBest = i => { try { return +localStorage.getItem("ttd_best_" + i) || 0; } catch (e) { return 0; } };
+const saveBest = w => { try { if (w > getBest(mapI)) localStorage.setItem(bestKey(), String(w)); } catch (e) {} };
+const fmtTime = sec => Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0");
+function startGame() {
+  ghosts.length = 0; fxShots.length = 0; WSCALE = DIFFS[diffI].waves; WAVES = DIFFS[diffI].endless ? Infinity : WSCALE; setMap(MAPS[mapI]); G = newGame(picked.map(i => cands[i]), DIFFS[diffI], MAPS[mapI]); G.t0 = Date.now(); frame.ts = -1; $("h-time").textContent = "⏱0:00";
+  phase = "build"; breakLeft = null; holding = null; inspect = null; cursor = null; audio(); music(true); paused = false; $("over").hidden = true;
+  show("s-game");
+  resize(); refreshUI();
+}
+const countOf = k => Object.values(G.placed).filter(p => p.t === k).length;
+function placedIdxOf(k) { return countOf(k) ? k : null; }
+function refreshUI() {
+  { const gm = endlessGems(G), ge = $("h-gems"); ge.hidden = !G.diff.endless; ge.textContent = "💎 " + gm; ge.style.opacity = gm ? 1 : .55; }
+  $("h-lives").textContent = "❤️ " + G.lives; $("h-money").textContent = "💰 " + Math.floor(playerMoney(G, coopMe()));
+  $("h-wave").textContent = "🌊 " + Math.max(1, phase === "build" ? G.wave + 1 : G.wave) + wavesLbl();
+  const sq = $("squad"); sq.innerHTML = "";
+  G.towers.forEach((t, k) => {
+    const d = document.createElement("div");
+    d.className = "sq" + (holding === k ? " hold" : "") + (placedIdxOf(k) !== null ? " on" : "");
+    d.innerHTML = '<div class="em"></div><div class="n"></div><div class="d"></div>';
+    setEm(d.querySelector(".em"), t); d.querySelector(".n").textContent = t.name;
+    d.querySelector(".d").textContent = (G.coop ? String(t.ownerName || "").slice(0, 7) + " " : "") + "💰" + towerCost(t) + (countOf(k) ? " ×" + countOf(k) : "");
+    if (G.coop) { if (t.owner !== G.coop.me) d.style.opacity = .5; d.style.borderColor = OWN_COL[ownIdx(t.owner) % 4]; }
+    d.onclick = () => { if (phase === "over") return; if (G.coop && t.owner !== G.coop.me) { $("info").textContent = "👤 Это человечинка игрока " + t.ownerName; return; } tapSquad(k); };
+    sq.appendChild(d);
+  });
+  const nxt = G.wave + 1, wb = $("b-wave");
+  wb.hidden = phase !== "build" || holding !== null; const pl = $("b-place"); pl.hidden = phase === "over" || holding === null; pl.disabled = !cursor; pl.textContent = "📍 Поставить (" + ownPlaced(G, coopMe()).length + "/" + maxUnits() + ")"; updSkip();
+  wb.textContent = nxt >= WAVES ? "👹 К боссу!" : (isMini(G, nxt) ? "👹 Волна " + nxt + " (мини-босс)" : "▶ Волна " + nxt);
+  $("b-ff").hidden = phase === "over"; coopUI();
+  $("prev").textContent = phase === "build" ? "" : (G.log || "");
+  renderInfo();
+}
+function renderInfo() {
+  renderUpg();
+  const el = $("info");
+  let t = null, txt = "";
+  if (holding !== null) { t = G.towers[holding]; txt = (cursor ? "Нажмите «Поставить» (💰" + towerCost(t) + "): " : "Тапните по полю — увидите радиус · 💰" + towerCost(t) + ": "); }
+  else if (inspect !== null && G.placed[inspect]) { t = G.towers[G.placed[inspect].t]; txt = "На поле: "; }
+  if (!t) { el.textContent = "Выберите человечинку, тапните по полю (покажется радиус), затем «Поставить». Тап по башне — улучшить или продать."; return; }
+  const pl = holding === null ? G.placed[inspect] : null, lvl = pl ? pl.lvl : 1, m = 1 + 0.4 * (lvl - 1);
+  const note = t.mutation && MUT_NOTES[t.mutation] ? " · " + MUT_NOTES[t.mutation] : "";
+  el.innerHTML = ""; const b = document.createElement("b"); b.textContent = t.emoji + " " + t.name;
+  if (isFarmTower(t)) {
+    el.append(txt, b, " — 🏦 Ферма · +" + farmIncome(lvl) + " за каждую завершённую волну" + (pl ? " · ★" + lvl + "/3" : " · максимум 3 уровня") + note);
+  } else {
+    el.append(txt, b, " — ⚔ " + Math.floor(t.dmgMin * m) + "–" + Math.floor(t.dmgMax * m) + ", " + (t.summon ? "👥 " + summonN(t, lvl) + " чел / " + towerCd(t, lvl).toFixed(1) + "с" : "🎯 " + rShow(towerR(t, lvl))) + (pl ? " · ★" + lvl + "/" + MAX_LVL : "") + note);
+  }
+}
+const TGT = ["Первый", "Последний", "Сильный", "Слабый"];
+function upgState() { const b = $("u-up"); if (b && b.dataset.cost) b.classList.toggle("off", playerMoney(G, coopMe()) < +b.dataset.cost); }
+// карточку улучшения можно таскать пальцем за любое место (кроме кнопок), чтобы увидеть радиус и человечинок
+let upgPos = null, upgFor = null;
+function applyUpgPos(box) { if (!upgPos) return; box.style.left = upgPos.l + "px"; box.style.top = upgPos.t + "px"; box.style.bottom = "auto"; box.style.transform = "none"; }
+(function () {
+  const box = $("upg"); let st = null;
+  box.addEventListener("pointerdown", e => {
+    if (e.target.closest("button")) return;
+    const r = box.getBoundingClientRect(), w = $("cv-wrap").getBoundingClientRect();
+    st = {sx: e.clientX, sy: e.clientY, l: r.left - w.left, t: r.top - w.top, wl: w.left, wt: w.top, pw: r.width};
+    try { box.setPointerCapture(e.pointerId); } catch (_) {}
+    box.classList.add("drag"); e.preventDefault();
+  });
+  box.addEventListener("pointermove", e => {
+    if (!st) return;
+    // можно утащить почти за край экрана: на виду остаётся полоска 70px, чтобы карточку можно было вернуть
+    const V = 70; upgPos = {l: clamp(st.l + e.clientX - st.sx, V - st.pw - st.wl, innerWidth - V - st.wl), t: clamp(st.t + e.clientY - st.sy, 4 - st.wt, innerHeight - V - st.wt)};
+    applyUpgPos(box);
+  });
+  const end = () => { st = null; box.classList.remove("drag"); };
+  box.addEventListener("pointerup", end); box.addEventListener("pointercancel", end);
+})();
+function renderUpg() {
+  const box = $("upg"), pl = G && inspect !== null ? G.placed[inspect] : null;
+  if (!pl || phase === "over") { box.hidden = true; upgFor = null; upgPos = null; return; }
+  if (upgFor !== inspect) { upgFor = inspect; upgPos = null; } // у новой башни карточка встаёт на своё место
+  const t = G.towers[pl.t], mine = !G.coop || t.owner === G.coop.me, lvl = pl.lvl, k = inspect, maxLvl = towerMaxLvl(t), max = lvl >= maxLvl, m = 1 + 0.4 * (lvl - 1), uc = upCost(t, lvl), low = pl.y > DH / 2;
+  box.style.setProperty("--rc", t.color || "#7c8cff"); box.hidden = false; box.style.top = low ? "6px" : ""; box.style.bottom = low ? "" : "6px"; box.style.left = ""; box.style.transform = ""; box.innerHTML = ""; applyUpgPos(box);
+  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt !== undefined) e.textContent = txt; return e; };
+  const hd = el("div", "u-h"), em = el("span", "u-em"); setEm(em, t);
+  const x = el("button", "u-x", "✕"); x.onclick = () => { inspect = null; refreshUI(); };
+  hd.append(em, el("b", "", t.name), x); box.appendChild(hd);
+  box.appendChild(el("div", "u-lv", "Уровень " + lvl + (max ? " · МАКС" : " из " + maxLvl)));
+  const dots = el("div", "u-dots"); for (let d = 1; d <= maxLvl; d++) dots.appendChild(el("i", d <= lvl ? "on" : "")); box.appendChild(dots);
+  const stat = (name, val, add, red) => { const r = el("div", "u-r"); const ie = el("i", red ? "red" : "", add); r.append(el("span", "", name), el("b", "", val), ie); box.appendChild(r); };
+  if (isFarmTower(t)) {
+    stat("Доход за волну:", "+" + farmIncome(lvl), lvl < towerMaxLvl(t) ? "след. ур.: +" + farmIncome(lvl + 1) : "МАКСИМУМ");
+    box.appendChild(el("div", "u-note", "🏦 Ферма приносит деньги после каждой полностью завершённой волны. Максимум 3 уровня."));
+  } else {
+    stat("Урон:", Math.floor(t.dmgMin * m) + "–" + Math.floor(t.dmgMax * m), max ? "" : "+" + Math.floor(t.dmgMin * 0.4) + "–" + Math.floor(t.dmgMax * 0.4));
+    if (t.summon) { stat("Призыв:", summonN(t, lvl) + " чел.", max || lvl + 1 !== 3 ? "" : "+1"); stat("HP союзника:", summonHp(t, lvl), max ? "" : "+" + (summonHp(t, lvl + 1) - summonHp(t, lvl))); } else stat("Радиус:", rShow(towerR(t, lvl)), max ? "" : "+0.8");
+    stat("Перезарядка:", towerCd(t, lvl).toFixed(2) + "с", (max || towerCd(t, lvl) - towerCd(t, lvl + 1) < 0.001) ? "" : "-" + (towerCd(t, lvl) - towerCd(t, lvl + 1)).toFixed(2), true);
+    const aoe = AOE_LVL[t.rarity];
+    if (aoe) box.appendChild(el("div", "u-note", lvl >= aoe ? "💥 Конус по площади · радиус " + rShow(aoeR(t, lvl)) + " · " + Math.round(AOE_CONE[t.rarity].a * 2 * 180 / Math.PI) + "°" : (lvl + 1 === aoe ? "🔓 След. уровень: урон по площади" : "🔒 Урон по площади с ур. " + aoe)));
+    const tr = el("div", "u-r"), tb = el("button", "", TGT[pl.target || 0]);
+    tb.disabled = !mine; tb.onclick = () => { pl.target = ((pl.target || 0) + 1) % 4; if (isGuest()) sendCmd({c: "tgt", k}); sfx("tap"); haptic(); renderUpg(); };
+    tr.append(el("span", "", "Цель:"), tb); box.appendChild(tr);
+  }
+  const up = el("button", "u-up" + (max ? " off" : ""), max ? "Макс. уровень" : "Улучшить 💰" + uc); up.id = "u-up";
+  if (!max) { up.dataset.cost = uc; up.classList.toggle("off", playerMoney(G, coopMe()) < uc); }
+  up.onclick = () => { if (max) return; if (playerMoney(G, coopMe()) < uc) { $("info").textContent = "⚠️ Не хватает 💰 (нужно " + uc + ")"; return; } if (isGuest()) { sendCmd({c: "up", k}); sfx("place"); return; } actUp(coopMe(), k); sfx("place"); haptic(); refreshUI(); };
+  box.appendChild(up);
+  const sv = Math.floor(G.invest[k] * 0.7), sl = el("button", "u-sell", "Продать +" + sv);
+  let sellArmed = false, sellTm = null;
+  sl.onclick = () => {
+    if (!sellArmed) {
+      sellArmed = true; sl.textContent = "Точно продать? Тапни ещё раз"; sl.classList.add("armed");
+      sellTm = setTimeout(() => { sellArmed = false; sl.textContent = "Продать +" + sv; sl.classList.remove("armed"); }, 2500);
+      return;
+    }
+    clearTimeout(sellTm); if (isGuest()) sendCmd({c: "sell", k}); else actSell(coopMe(), k); inspect = null; refreshUI();
+  };
+  box.appendChild(sl);
+  if (!mine) { up.remove(); sl.remove(); box.appendChild(el("div", "u-note", "👤 Башня игрока " + t.ownerName)); }
+}
+function tapSquad(k) {
+  holding = holding === k ? null : k; cursor = null; inspect = null;
+  sfx("tap"); haptic(); refreshUI();
+}
+function updSkip() {
+  const b = $("b-skip");
+  if (G && G.coop && !G.coop.host) { b.hidden = !(phase === "run" && G.skipOk); return; }
+  if (!G || phase !== "run" || G.wave >= WAVES || G.waitDone) { b.hidden = true; if (G) G.skipOk = false; return; }
+  const rem = G.queue.filter(Boolean).length + G.extra.reduce((a, x) => a + x.filter(Boolean).length, 0) + G.enemies.length;
+  const can = 1 - rem / Math.max(1, G.waveTotal) >= 0.5; G.skipOk = can;
+  b.hidden = !can;
+  if (can && autoSkip && !skipping) doSkip();
+}
+cv.addEventListener("click", ev => {
+  if (!G || phase === "over") return;
+  const r = cv.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width * DW, y = (ev.clientY - r.top) / r.height * DH;
+  if (holding !== null) { cursor = {x: clamp(x, 14, DW - 14), y: clamp(y, 14, DH - 14)}; sfx("tap"); haptic(); refreshUI(); if (onRoad(cursor.x, cursor.y)) $("info").textContent = "⚠️ Здесь дорога — выберите место рядом"; return; }
+  let best = null, bd = 26 * 26;
+  for (const k of Object.keys(G.placed)) { const p = G.placed[k], d = (p.x - x) ** 2 + (p.y - y) ** 2; if (d < bd) { bd = d; best = +k; } }
+  inspect = best !== null && inspect !== best ? best : null; sfx("tap"); refreshUI();
+});
+let noteN = 0;
+function msgTo(u, t) { if (!G.coop || u === G.coop.me) $("info").textContent = t; else G.note = {u, t, n: ++noteN}; }
+function actPlace(u, ti, x, y) {
+  const t = G.towers[ti]; if (!t || phase === "over" || (G.coop && t.owner !== u)) return false;
+  x = clamp(+x || 0, 14, DW - 14); y = clamp(+y || 0, 14, DH - 14);
+  const c = towerCost(t);
+  if (ownPlaced(G, u).length >= maxUnits()) { msgTo(u, "⚠️ Лимит: " + maxUnits() + " юнитов. Продайте кого-нибудь."); return false; }
+  if (t.summon && ownPlaced(G, u).filter(p => G.towers[p.t].summon).length >= MAX_SUMMONERS) { msgTo(u, "⚠️ Призывающих можно не больше " + MAX_SUMMONERS); return false; }
+  if (isFarmTower(t) && ownPlaced(G, u).filter(p => isFarmTower(G.towers[p.t])).length >= MAX_FARMS) { msgTo(u, "⚠️ Можно поставить не больше " + MAX_FARMS + " ферм"); return false; }
+  if (playerMoney(G, u) < c) { msgTo(u, "⚠️ Не хватает 💰 (нужно " + c + ")"); return false; }
+  if (onRoad(x, y)) { msgTo(u, "⚠️ Нельзя ставить на дорогу — отодвиньте в сторону"); return false; }
+  for (const k of Object.keys(G.placed)) { const p = G.placed[k]; if ((p.x - x) ** 2 + (p.y - y) ** 2 < 24 * 24) { msgTo(u, "⚠️ Слишком близко к другой человечинке"); return false; } }
+  const id = G.nid++; addPlayerMoney(G, u, -c); G.placed[id] = {x, y, lvl: 1, t: ti}; G.invest[id] = c; return id;
+}
+function actUp(u, k) {
+  const pl = G.placed[k]; if (!pl) return false; const t = G.towers[pl.t];
+  if ((G.coop && t.owner !== u) || pl.lvl >= towerMaxLvl(t)) return false;
+  const uc = upCost(t, pl.lvl); if (playerMoney(G, u) < uc) { msgTo(u, "⚠️ Не хватает 💰 (нужно " + uc + ")"); return false; }
+  addPlayerMoney(G, u, -uc); pl.lvl += 1; G.invest[k] += uc; return true;
+}
+function actSell(u, k) {
+  const pl = G.placed[k]; if (!pl) return false;
+  if (G.coop && G.towers[pl.t].owner !== u) return false;
+  addPlayerMoney(G, u, Math.floor(G.invest[k] * 0.7)); delete G.placed[k]; delete G.invest[k]; return true;
+}
+$("b-place").onclick = () => {
+  if (holding === null || !cursor) return;
+  if (isGuest()) { sendCmd({c: "place", t: holding, x: cursor.x, y: cursor.y}); holding = null; cursor = null; sfx("place"); refreshUI(); return; }
+  const id = actPlace(coopMe(), holding, cursor.x, cursor.y); if (id === false) return;
+  inspect = id; holding = null; cursor = null; sfx("place"); haptic("medium"); refreshUI();
+};
+let autoSkip = false, skipping = false;
+function doSkip(requestedBy) {
+  if (isGuest()) { if (phase === "run") sendCmd({c: "skip"}); return; }
+  if (phase !== "run" || G.wave >= WAVES || G.waitDone || skipping || !G.skipOk) return;
+  skipping = true;
+  G.wave += 1; const q = buildQueue(G, G.wave); q.forEach(e => { if (e && !e.isBoss) e.dodge = G.map.dodge || 0; });
+  G.extra.push(q); G.waveTotal += q.filter(Boolean).length; addPlayerMoney(G, requestedBy == null ? coopMe() : requestedBy, 25); sfx("wave"); haptic("medium"); refreshUI();
+  skipping = false;
+}
+$("b-skip").onclick = () => doSkip(coopMe());
+$("b-auto").onclick = () => { autoSkip = !autoSkip; $("b-auto").classList.toggle("on", autoSkip); haptic(); if (autoSkip) updSkip(); };
+$("b-snd").onclick = () => {
+  muted = !muted;
+  if (master) master.gain.value = muted ? 0 : 0.9;
+  const custom = $("custom-track");
+  if (custom) custom.volume = muted ? 0 : MUSIC_VOL;
+  $("b-snd").textContent = muted ? "🔇" : "🔊";
+  audio();
+};
+function seg(id, arr, cur, fn) {
+  const el = $(id); el.innerHTML = "";
+  arr.forEach((a, i) => { const b = document.createElement("button"); b.textContent = a.name; if (i === cur) b.className = "on"; b.onclick = () => { fn(i); haptic(); renderPlay(); }; el.appendChild(b); });
+}
+
+// ─── управление ───
+$("go").onclick = () => { haptic(); if (coop && !G) { if (picked.length) api("towers", {id: coop.id, towers: squadOut()}).catch(() => {}); show("s-lobby"); } else show("s-menu"); };
+$("b-wave").onclick = () => {
+  if (isGuest()) { if (phase === "build") sendCmd({c: "wave"}); return; }
+  if (phase !== "build") return;
+  if (!Object.keys(G.placed).length) { $("info").textContent = "⚠️ Поставьте хотя бы одну человечинку на поле!"; return; }
+  holding = null; inspect = null; cursor = null; breakLeft = null; sfx("wave"); startWave(G); phase = "run"; lastTick = performance.now(); haptic("medium"); refreshUI();
+};
+$("b-speed").onclick = () => { speedIdx = (speedIdx + 1) % SPEEDS.length; tickMs = SPEEDS[speedIdx]; $("b-speed").textContent = "×" + (speedIdx + 1); haptic(); };
+$("b-ff").onclick = () => { if (phase === "over") return; G.over = "surrender"; finish(); };
+$("o-again").onclick = () => { coopStop(); phase = "pick"; G = null; music(false); show("s-menu"); };
+
+// ── награда за победу: 5 / 15 / 40 💎. Сервер должен сам определить сумму по mode и проверить initData ──
+async function rewardWin() {
+  const d = G.diff.endless ? endlessPay(G) : G.diff.diamonds, r = $("o-r"), rb = $("o-retry");
+  rb.hidden = true;
+  if (G.rewarded) { r.textContent = "💎 Алмазы уже начислены"; return; }
+  const dc = G.diff.endless ? 0 : (G.diff.coins || 0);
+  if (demo || !tg || !tg.initData) { r.textContent = "💎 Награда: " + d + " алмазов" + (dc ? " и 💰 " + dc + " монет" : "") + " (в демо-режиме не начисляется)"; return; }
+  r.textContent = "💎 Начисляем алмазы…";
+  try {
+    const resp = await fetch(IMG_BASE + "/ttdwin", {method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({initData: tg.initData, mode: diffI, wave: G.wave})});
+    const j = await resp.json().catch(() => ({}));
+    if (resp.status === 429) { G.rewarded = true; r.textContent = "💎 Награда за недавнюю победу уже начислена"; return; }
+    if (!resp.ok || !j.ok) throw new Error(j.error || ("http " + resp.status));
+    G.rewarded = true; r.textContent = "💎 +" + j.gems + " алмазов" + (j.coins ? " и 💰 +" + j.coins + " монет" : "") + " начислено! Баланс 💎: " + j.total; haptic("heavy");
+  } catch (e) { r.textContent = "⚠️ Не удалось начислить алмазы: " + (e && e.message ? e.message : e) + " [" + IMG_BASE + "]"; rb.hidden = false; }
+}
+$("o-retry").onclick = () => { if (G && (G.over === "win" || (G.diff.endless && endlessPay(G) > 0))) rewardWin(); };
+function finish() {
+  G.elapsed = Math.floor((Date.now() - G.t0) / 1000); $("h-time").textContent = "⏱" + fmtTime(G.elapsed);
+  phase = "over"; music(false); sfx(G.over === "win" ? "win" : "lose"); refreshUI();
+  const t = $("o-t"), s = $("o-s");
+  if (G.over === "win") { t.textContent = "🏆 Победа!"; s.textContent = "Босс повержен, база спасена. Жизней: " + G.lives + "/" + G.maxLives; haptic("heavy"); rewardWin(); }
+  else if (G.diff.endless) {
+    const w = Math.max(1, G.wave), old = getBest(mapI); saveBest(w);
+    t.textContent = G.over === "lose" ? "💀 База разрушена" : "🏳️ Вы сдались";
+    s.textContent = "♾ Вы дошли до волны " + w + (w > old ? " · 🏆 новый рекорд!" : " · рекорд: " + old);
+  }
+  else if (G.over === "lose") { t.textContent = "💀 База разрушена"; s.textContent = "Волна " + G.wave + "/" + WAVES + ""; }
+  else { t.textContent = "🏳️ Вы сдались"; s.textContent = "Волна " + Math.max(1, G.wave) + "/" + WAVES + ""; }
+  s.textContent += " · ⏱ " + fmtTime(G.elapsed);
+  if (G.diff.endless) {
+    if (endlessPay(G) > 0) rewardWin();
+    else { $("o-r").textContent = endlessGems(G) ? "💎 Накоплено " + endlessGems(G) + " — нужен минимум 1 целый алмаз" : "💎 Алмазы копятся с " + ENDLESS_GEM_WAVE + "-й волны"; $("o-retry").hidden = true; }
+  } else if (G.over !== "win") { $("o-r").textContent = ""; $("o-retry").hidden = true; }
+  $("over").hidden = false;
+}
+function waveDone() {
+  if (G.over) { finish(); return; }
+  // Начисляем награду ровно один раз при подтверждённом завершении волны.
+  // Доход суммируется со всех поставленных ферм с учётом их уровня.
+  if (G.paidWave !== G.wave) {
+    const farmByOwner = Object.create(null);
+    for (const id of Object.keys(G.placed)) {
+      const pl = G.placed[id], tower = G.towers[pl.t];
+      if (!isFarmTower(tower)) continue;
+      const key = String(G.coop && tower.owner != null ? tower.owner : coopMe());
+      farmByOwner[key] = (farmByOwner[key] || 0) + farmIncome(pl.lvl);
+    }
+    const farmBonus = Object.values(farmByOwner).reduce((sum, value) => sum + value, 0);
+    const baseBonus = Math.round((80 + G.wave * 15) * G.gold);
+    G.farmBonus = farmBonus;
+    G.waveBonus = baseBonus + farmBonus;
+    if (G.coop && G.coop.players.length) {
+      // Базовую награду делим поровну, доход каждой фермы получает её владелец.
+      const n = G.coop.players.length, share = Math.floor(baseBonus / n), remainder = baseBonus % n;
+      G.coop.players.forEach((player, i) => {
+        const farm = farmByOwner[String(player.u)] || 0;
+        addPlayerMoney(G, player.u, share + (i < remainder ? 1 : 0) + farm);
+      });
+    } else {
+      addPlayerMoney(G, null, baseBonus + farmBonus);
+    }
+    G.paidWave = G.wave;
+    $("h-money").textContent = "💰 " + Math.floor(playerMoney(G, coopMe()));
+  }
+  if (G.wave >= WAVES) { G.over = "win"; finish(); return; }
+  phase = "build"; breakLeft = 10000; lastAllyHomeTick = performance.now(); refreshUI();
+  if (G.waveBonus) { $("info").textContent = "💰 +" + G.waveBonus + " за пройденную волну" + (G.farmBonus ? " (фермы: +" + G.farmBonus + ")" : ""); sfx("place"); }
+}
+
+// ─── отрисовка ───
+const fxShots = [], ghosts = [];
+function frame(now) {
+  requestAnimationFrame(frame);
+  if (!G || $("s-game").hidden) return;
+  if (G.coop && !G.coop.host) { guestFrame(now); return; }
+  if (phase !== "over") { const sec = Math.floor((Date.now() - G.t0) / 1000); if (sec !== frame.ts) { frame.ts = sec; $("h-time").textContent = "⏱" + fmtTime(sec); } }
+  const dt = Math.min(100, now - (frame.p || now)); frame.p = now;
+  // Во время перерыва выжившие союзники продолжают путь назад к точке появления врагов.
+  if (phase === "build" && !paused && G.allies.some(a => a.returning) && now - lastAllyHomeTick >= tickMs) {
+    lastAllyHomeTick = now;
+    for (const a of G.allies) {
+      if (!a.returning) continue;
+      a.prev = a.pos; a.pos -= 1; a.at = now;
+    }
+    G.allies = G.allies.filter(a => a.hp > 0 && a.pos > 0);
+    if (G.coop) pubSnap();
+  }
+  if (phase === "build" && breakLeft !== null && !paused && holding === null) {
+    if (autoSkip && breakLeft > 2000) breakLeft = 2000;
+    breakLeft -= dt;
+    const nx = G.wave + 1; $("b-wave").textContent = (nx >= WAVES ? "👹 К боссу!" : "▶ Волна " + nx) + " · " + Math.max(0, Math.ceil(breakLeft / 1000)) + "с";
+    if (breakLeft <= 0) { if (Object.keys(G.placed).length) { breakLeft = null; $("b-wave").onclick(); } else breakLeft = 0; }
+  }
+  if (G.waitDone && now >= G.waitDone) { G.waitDone = 0; if (phase === "run") waveDone(); }
+  if (phase === "run" && !paused && !G.waitDone && now - lastTick >= tickMs) {
+    lastTick = now;
+    const done = step(G);
+    for (const e of G.enemies) e.at = now; for (const a of G.allies) a.at = now;
+    for (const f of G.fx) if (f.t === "die" && f.e) f.e.at = now;
+    for (const f of G.fx) { fxShots.push(Object.assign({t0: now}, f)); if (f.t === "die" && f.e && f.d > 0) ghosts.push({e: f.e, until: now + f.d * tickMs}); }
+    for (const f of G.fx) if (f.t === "stun") { sfx("breach"); haptic("heavy"); }
+    if (G.coop) { G.ctk = (G.ctk || 0) + 1; pubSnap(true); }
+    if (G.log.includes("💔")) sfx("breach");
+    $("h-money").textContent = "💰 " + Math.floor(playerMoney(G, coopMe())); updSkip(); upgState();
+    $("h-lives").textContent = "❤️ " + G.lives; $("prev").textContent = G.log || "";
+    const boss = G.enemies.find(e => e.isBoss), bw = $("boss");
+    bw.style.display = boss ? "block" : "none";
+    if (boss) { $("boss-f").style.width = Math.max(0, boss.hp / boss.maxHp * 100) + "%"; $("boss-t").textContent = (boss.kind === "mini" ? "👹 МИНИ-БОСС " : "👹 БОСС ") + Math.max(0, boss.hp) + " / " + boss.maxHp; }
+    if (done) { $("boss").style.display = "none"; let dd = 0; for (const f of G.fx) if (f.d > dd) dd = f.d; G.waitDone = now + dd * tickMs + 220; updSkip(); }
+  }
+  draw(now);
+}
+function drawTower(t, x, y, s) {
+  const im = timg(t);
+  if (im) { ctx.save(); ctx.beginPath(); ctx.arc(x, y, s / 2, 0, 7); ctx.clip(); ctx.drawImage(im, x - s / 2, y - s / 2, s, s); ctx.restore(); }
+  else { ctx.font = Math.round(s * 0.6) + "px sans-serif"; ctx.fillStyle = "#fff"; ctx.fillText(t.emoji, x, y + 1); }
+}
+function rr(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function draw(now) {
+  const k = cssW / DW * dpr;
+  ctx.setTransform(k, 0, 0, k, 0, 0);
+  ctx.clearRect(0, 0, DW, DH);
+  const grd = ctx.createLinearGradient(0, 0, 0, DH); grd.addColorStop(0, G.map.bg0); grd.addColorStop(1, G.map.bg1);
+  ctx.fillStyle = grd; ctx.fillRect(0, 0, DW, DH);
+  // дорога
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.globalAlpha = 0.18; ctx.font = "20px sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  (G.map.decoPts || []).forEach(d => { ctx.font = d[2] + "px sans-serif"; ctx.fillText(G.map.decoEmoji, d[0], d[1]); }); ctx.globalAlpha = 1;
+  ctx.strokeStyle = G.map.road0 || "#2c3258"; ctx.lineWidth = 50; ctx.beginPath();
+  G.map.road.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke();
+  ctx.strokeStyle = G.map.road1 || "#383f6b"; ctx.lineWidth = 40; ctx.beginPath();
+  G.map.road.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke();
+  ctx.fillStyle = "rgba(255,255,255,.12)";
+  CELLS.forEach(c => { ctx.beginPath(); ctx.arc(c[0], c[1], 2.5, 0, 7); ctx.fill(); });
+  const hp = G.map.base, ep = xy(-0.3);
+  ctx.font = "28px sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#fff";
+  ctx.fillText("🏠", hp[0], hp[1]); ctx.font = "16px sans-serif"; ctx.fillText("⚠️", clamp(ep[0], 12, DW - 12), clamp(ep[1], 12, DH - 12));
+  let rt = null, rp = null;
+  if (holding !== null) { rt = G.towers[holding]; rp = cursor; }
+  else if (inspect !== null && G.placed[inspect]) { rt = G.towers[G.placed[inspect].t]; rp = G.placed[inspect]; }
+  if (rt && rp && !rt.summon && !isFarmTower(rt)) {
+    const R = towerR(rt, holding !== null ? 1 : rp.lvl);
+    ctx.globalAlpha = 0.2; ctx.fillStyle = rt.color; ctx.beginPath(); ctx.arc(rp.x, rp.y, R, 0, 7); ctx.fill();
+    ctx.globalAlpha = 0.85; ctx.strokeStyle = rt.color; ctx.lineWidth = 2; ctx.setLineDash([6, 5]); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+    // внутренний круг и сектор AoE (если открыт на этом уровне)
+    if (holding === null && AOE_LVL[rt.rarity] && rp.lvl >= AOE_LVL[rt.rarity]) {
+      const ar = aoeR(rt, rp.lvl), a0 = rp.aim === undefined ? -Math.PI / 2 : rp.aim, ca = AOE_CONE[rt.rarity].a;
+      ctx.globalAlpha = 0.45; ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(rp.x, rp.y, ar, 0, 7); ctx.stroke();
+      ctx.globalAlpha = 0.4; ctx.fillStyle = "#ff8a3d"; ctx.beginPath(); ctx.moveTo(rp.x, rp.y); ctx.arc(rp.x, rp.y, ar, a0 - ca, a0 + ca); ctx.closePath(); ctx.fill();
+      ctx.globalAlpha = 0.9; ctx.strokeStyle = "#ff8a3d"; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1;
+    }
+  }
+  if (holding !== null && cursor) { ctx.globalAlpha = 0.8; drawTower(G.towers[holding], cursor.x, cursor.y, 36); ctx.globalAlpha = 1; if (onRoad(cursor.x, cursor.y)) { ctx.strokeStyle = "#ff4d4d"; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(cursor.x, cursor.y, 22, 0, 7); ctx.stroke(); } }
+  for (const k of Object.keys(G.placed)) {
+    const p = G.placed[k], t = G.towers[p.t];
+    ctx.beginPath(); ctx.arc(p.x, p.y, 19, 0, 7); ctx.fillStyle = "#1d2242"; ctx.fill();
+    drawTower(t, p.x, p.y, 36);
+    if (t.rarity === "secret") { ctx.beginPath(); ctx.arc(p.x, p.y, 21.5, 0, 7); ctx.lineWidth = 1.5; ctx.strokeStyle = "#9a9aa8"; ctx.stroke(); }
+    ctx.beginPath(); ctx.arc(p.x, p.y, 19, 0, 7); ctx.lineWidth = 3; ctx.strokeStyle = t.color; ctx.stroke();
+    if (p.lvl > 1) { ctx.font = "bold 11px sans-serif"; ctx.fillStyle = "#ffc857"; ctx.fillText("★" + p.lvl, p.x + 14, p.y + 17); }
+    if (G.coop) { ctx.font = "bold 9px sans-serif"; ctx.fillStyle = OWN_COL[ownIdx(t.owner) % 4]; ctx.fillText(String(t.ownerName || "").slice(0, 8), p.x, p.y + 30); }
+    if (p.stun > 0) {
+      ctx.beginPath(); ctx.arc(p.x, p.y, 19, 0, 7); ctx.fillStyle = "rgba(20,10,40,.6)"; ctx.fill();
+      ctx.font = "18px sans-serif"; ctx.fillStyle = "#fff"; ctx.fillText("💫", p.x, p.y - 22);
+      ctx.font = "bold 10px sans-serif"; ctx.lineWidth = 2; ctx.strokeStyle = "rgba(0,0,0,.85)";
+      const sl = (p.stun * 0.75).toFixed(1) + "с"; ctx.strokeText(sl, p.x, p.y + 1); ctx.fillText(sl, p.x, p.y + 1);
+    }
+  }
+  // выстрелы
+  const ealpha = e => !paused && (phase === "run" || (phase === "build" && e.returning)) ? Math.min(1, (now - (e.at || lastTick)) / tickMs) : 1;
+  // у гостя снимки приходят с задержкой: продолжаем движение по инерции и плавно подтягиваем к новой позиции,
+  // иначе враг доходит до клетки, стоит, а потом "прыгает" на следующую
+  const guest = !!(G.coop && !G.coop.host);
+  const visPos = e => {
+    if (!guest) return e.prev + (e.pos - e.prev) * ealpha(e);
+    if (e.visT === now) return e.vis;
+    let t = e.pos;
+    if (phase === "run" || e.returning) {
+      const a = Math.max(0, (now - (e.at || lastTick)) / tickMs);
+      t = a <= 1 ? e.prev + (e.pos - e.prev) * a : e.pos + (e.pos - e.prev) * Math.min(a - 1, 0.8);
+    }
+    t = Math.min(t, PATH_LEN);
+    if (e.vis === undefined || e.visT === undefined || Math.abs(t - e.vis) > 2.5) e.vis = t;
+    else e.vis += (t - e.vis) * Math.min(1, (now - e.visT) / 90);
+    e.visT = now; return e.vis;
+  };
+  const vp = e => xy(visPos(e));
+  let sndLeft = 2;
+  for (let i = fxShots.length - 1; i >= 0; i--) {
+    const f = fxShots[i], age = now - f.t0 - (f.d || 0) * tickMs, life = Math.min(260, tickMs * 0.8);
+    if (age > life) { fxShots.splice(i, 1); continue; }
+    if (age < 0) continue;
+    if (!f.snd) { f.snd = 1; if (f.t === "shot" && sndLeft-- > 0) sfx("shot"); else if (f.t === "die") sfx("die"); }
+    const a = 1 - age / life;
+    if (f.t === "shot") {
+      const p = [f.from.x, f.from.y], e = vp(f.enemy);
+      ctx.globalAlpha = a; ctx.strokeStyle = (f.color === R_COLOR.secret ? "#9a9aa8" : f.color) || "#fff"; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(e[0], e[1]); ctx.stroke();
+      if (f.note) { ctx.font = "16px sans-serif"; ctx.fillText(f.note, e[0], e[1] - 22 - (1 - a) * 12); }
+      ctx.globalAlpha = 1;
+    } else if (f.t === "hp") {
+      /* только для полоски хп */
+    } else if (f.t === "cone") {
+      ctx.globalAlpha = a * 0.55; ctx.fillStyle = "#ff8a3d"; ctx.beginPath(); ctx.moveTo(f.from.x, f.from.y); ctx.arc(f.from.x, f.from.y, f.r, f.ang - f.a, f.ang + f.a); ctx.closePath(); ctx.fill();
+      ctx.globalAlpha = a; ctx.strokeStyle = "#ffd29a"; ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1;
+    } else if (f.t === "ehit") {
+      const e = vp(f.enemy); ctx.globalAlpha = a; ctx.strokeStyle = "#ff3b4e"; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(e[0], e[1]); ctx.lineTo(f.to.x, f.to.y); ctx.stroke();
+      ctx.font = "bold 12px sans-serif"; ctx.lineWidth = 3; ctx.strokeStyle = "rgba(0,0,0,.85)"; ctx.fillStyle = "#ff8a95";
+      const tx = "-" + f.dmg; ctx.strokeText(tx, f.to.x, f.to.y - 24 - (1 - a) * 12); ctx.fillText(tx, f.to.x, f.to.y - 24 - (1 - a) * 12); ctx.globalAlpha = 1;
+    } else if (f.t === "clash") {
+      const e = vp(f.enemy);
+      ctx.globalAlpha = a; ctx.font = "bold 12px sans-serif"; ctx.lineWidth = 3;
+      ctx.strokeStyle = "rgba(0,0,0,.85)";
+      ctx.fillStyle = "#ffe08a";
+      const et = "-" + f.enemyDmg;
+      ctx.strokeText(et, e[0], e[1] - 24 - (1 - a) * 12); ctx.fillText(et, e[0], e[1] - 24 - (1 - a) * 12);
+      ctx.fillStyle = "#ff8a95";
+      const at = "-" + f.allyDmg;
+      ctx.strokeText(at, f.to.x, f.to.y - 24 - (1 - a) * 12); ctx.fillText(at, f.to.x, f.to.y - 24 - (1 - a) * 12);
+      ctx.globalAlpha = 1;
+    } else if (f.t === "call") {
+      ctx.globalAlpha = a; ctx.strokeStyle = "#ff8a1f"; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(f.from.x, f.from.y, 20 + (1 - a) * 16, 0, 7); ctx.stroke(); ctx.globalAlpha = 1;
+    } else if (f.t === "summon") {
+      const e = vp(f.enemy); ctx.globalAlpha = a; ctx.strokeStyle = "#ff5dd2"; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(e[0], e[1], 22 + (1 - a) * 36, 0, 7); ctx.stroke();
+      ctx.font = "18px sans-serif"; ctx.fillText("📣", e[0], e[1] - 36); ctx.globalAlpha = 1;
+    } else if (f.t === "stun") {
+      const e = vp(f.enemy);
+      ctx.globalAlpha = a; ctx.strokeStyle = "#c06bff"; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(e[0], e[1]); ctx.lineTo(f.to.x, f.to.y); ctx.stroke(); ctx.globalAlpha = 1;
+    } else {
+      const e = f.e ? vp(f.e) : xy(f.pos); ctx.globalAlpha = a; ctx.font = (14 + (1 - a) * 14) + "px sans-serif"; ctx.fillText("💥", e[0], e[1]); ctx.globalAlpha = 1;
+    }
+  }
+  // враги (плавно между ходами)
+  const pend = new Map();
+  for (const f of fxShots) if (f.dmg && now - f.t0 - (f.d || 0) * tickMs < 0) pend.set(f.enemy, (pend.get(f.enemy) || 0) + f.dmg);
+  for (let i = ghosts.length - 1; i >= 0; i--) if (now >= ghosts[i].until) ghosts.splice(i, 1);
+  const list = G.enemies.concat(ghosts.map(g => g.e)).sort((a, b) => a.pos - b.pos);
+  for (const e of list) {
+    const q = vp(e), boss = e.isBoss;
+    const L = LOOK[e.kind] || LOOK.normal, rad = L.s * 0.68;
+    ctx.beginPath(); ctx.arc(q[0], q[1], rad, 0, 7); ctx.fillStyle = L.c + "40"; ctx.fill(); ctx.lineWidth = L.th ? 3 : 2; ctx.strokeStyle = L.c; ctx.stroke();
+    ctx.font = L.s + "px sans-serif"; if ("filter" in ctx) ctx.filter = "hue-rotate(" + L.h + "deg)";
+    ctx.fillText(ENEMY_EMOJI[e.kind], q[0], q[1]); if ("filter" in ctx) ctx.filter = "none";
+    if (boss) { ctx.font = "16px sans-serif"; ctx.fillText(e.kind === "mini" ? "👹" : "👑", q[0], q[1] - rad - 6); }
+    const w = boss ? 48 : L.s > 24 ? 32 : 24, y = q[1] - rad - (boss ? 22 : 7);
+    ctx.fillStyle = "rgba(0,0,0,.55)"; ctx.fillRect(q[0] - w / 2, y, w, 4);
+    ctx.fillStyle = boss ? "#ff5d6c" : "#4cd98a"; const vh = Math.min(e.maxHp, e.hp + (pend.get(e) || 0));
+    ctx.fillRect(q[0] - w / 2, y, w * Math.max(0, vh / e.maxHp), 4);
+    ctx.font = "bold 9px sans-serif"; ctx.lineWidth = 2; ctx.strokeStyle = "rgba(0,0,0,.85)"; ctx.fillStyle = "#fff"; const ht = fmtHp(vh); ctx.strokeText(ht, q[0], y - 5); ctx.fillText(ht, q[0], y - 5);
+    if (e.frozen > 0) { ctx.font = "12px sans-serif"; ctx.fillText("❄️", q[0] + 12, q[1] - 10); }
+    if (e.shield > 0) {
+      ctx.beginPath(); ctx.arc(q[0], q[1], rad + 4, 0, 7); ctx.lineWidth = 3; ctx.strokeStyle = "#9ad1ff"; ctx.stroke();
+      ctx.font = "bold 11px sans-serif"; ctx.lineWidth = 3; ctx.strokeStyle = "rgba(0,0,0,.85)"; ctx.fillStyle = "#cfe8ff";
+      const st = "🛡" + e.shield; ctx.strokeText(st, q[0], q[1] + rad + 11); ctx.fillText(st, q[0], q[1] + rad + 11);
+    }
+  }
+  // союзники-человечинки (картинка «обычной человечинки»)
+  for (const a of G.allies || []) {
+    const q = vp(a), sz = 20, im = demo ? null : timg({img: 0});
+    ctx.beginPath(); ctx.arc(q[0], q[1], sz / 2 + 2, 0, 7); ctx.fillStyle = "rgba(255,138,31,.35)"; ctx.fill();
+    if (im) { ctx.save(); ctx.beginPath(); ctx.arc(q[0], q[1], sz / 2, 0, 7); ctx.clip(); ctx.drawImage(im, q[0] - sz / 2, q[1] - sz / 2, sz, sz); ctx.restore(); }
+    else { ctx.font = "14px sans-serif"; ctx.fillStyle = "#fff"; ctx.fillText("🧍", q[0], q[1]); }
+    ctx.beginPath(); ctx.arc(q[0], q[1], sz / 2 + 1, 0, 7); ctx.lineWidth = 2; ctx.strokeStyle = "#ff8a1f"; ctx.stroke();
+    ctx.fillStyle = "rgba(0,0,0,.6)"; ctx.fillRect(q[0] - 9, q[1] - sz / 2 - 8, 18, 3);
+    ctx.fillStyle = "#ffb86b"; ctx.fillRect(q[0] - 9, q[1] - sz / 2 - 8, 18 * Math.max(0, a.hp / a.maxHp), 3);
+    ctx.font = "bold 8px sans-serif"; ctx.lineWidth = 2; ctx.strokeStyle = "rgba(0,0,0,.85)"; ctx.fillStyle = "#ffe0bd"; ctx.strokeText(fmtHp(a.hp), q[0], q[1] - sz / 2 - 12); ctx.fillText(fmtHp(a.hp), q[0], q[1] - sz / 2 - 12);
+  }
+}
+function show(id) {
+  ["s-menu", "s-pick", "s-play", "s-game", "s-srv", "s-lobby"].forEach(s => { $(s).hidden = s !== id; });
+  if (id === "s-menu") renderMenu(); else if (id === "s-pick") renderPick(); else if (id === "s-play") renderPlay(); else if (id === "s-srv") svRefresh(); else if (id === "s-lobby") lobbyRender();
+}
+function renderMenu() { $("m-chel").textContent = "🧍 Человечинки (" + picked.length + "/" + MAX_SQUAD + ")"; }
+const DIFF_UI = [
+  {c:"#4cd98a", d:"Для разминки"},
+  {c:"#7c8cff", d:"Мини-боссы, станы"},
+  {c:"#ff5d6c", d:"Враги крепче, жизней мало"},
+  {c:"#ffc857", d:"Волны без конца"}
+];
+const MAP_UI = [
+  {d:"Широкие повороты, много места под башни. Для новичков."},
+  {d:"Частые изгибы: башни у поворотов бьют сразу по двум участкам."},
+  {d:"Самый долгий путь к центру, но враги уклоняются от ударов."},
+  {d:"Дорога пересекает сама себя: башни у перекрёстка бьют каждого врага дважды, база — в самом центре."}
+];
+function drawPreview(cv, m) {
+  const dpr = Math.min(window.devicePixelRatio || 1, 3), w = 132, h = 94, k = w / DW;
+  cv.width = w * dpr; cv.height = h * dpr;
+  const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, m.bg0); g.addColorStop(1, m.bg1);
+  c.fillStyle = g; c.fillRect(0, 0, w, h);
+  c.globalAlpha = .45; c.textAlign = "center"; c.textBaseline = "middle";
+  (m.decoPts || []).forEach(d => { c.font = Math.max(6, d[2] * k) + "px sans-serif"; c.fillText(m.decoEmoji, d[0] * k, d[1] * (h / DH)); });
+  c.globalAlpha = 1;
+  const ky = h / DH, path = () => { c.beginPath(); m.road.forEach((p, i) => i ? c.lineTo(p[0] * k, p[1] * ky) : c.moveTo(p[0] * k, p[1] * ky)); c.stroke(); };
+  c.lineJoin = c.lineCap = "round";
+  c.strokeStyle = m.road0; c.lineWidth = 50 * k * 0.9; path();
+  c.strokeStyle = m.road1; c.lineWidth = 40 * k * 0.9; path();
+  const e = m.road[0], b = m.base;
+  c.font = "13px sans-serif";
+  c.fillText("🚪", Math.max(8, e[0] * k + 8), e[1] * ky);
+  c.fillText("🏰", b[0] * k, b[1] * ky);
+}
+function renderPlay() {
+  const dEl = $("opt-d"), mEl = $("opt-m"), keepY = document.querySelector("#s-play .scroll").scrollTop;
+  dEl.innerHTML = ""; mEl.innerHTML = "";
+  DIFFS.forEach((d, i) => {
+    const ui = DIFF_UI[i] || DIFF_UI[1], parts = d.name.split(" "), b = document.createElement("button");
+    b.className = "mode" + (i === diffI ? " on" : ""); b.style.setProperty("--c", ui.c);
+    if (d.endless) {
+      b.classList.add("wide");
+      b.innerHTML = '<span class="mi">' + parts[0] + '</span><span><span class="mn">' + parts.slice(1).join(" ") + '</span><br><span class="mr">💎 копятся с ' + ENDLESS_GEM_WAVE + '-й волны · ' + ENDLESS_UNITS + ' юнитов<br>Мини-босс каждые 10 волн · ❤️ ' + d.lives + '</span></span>' +
+        '<span class="md" style="white-space:nowrap">🏆 ' + (getBest(mapI) || "—") + '</span>';
+    } else b.innerHTML = '<span class="mi">' + parts[0] + '</span><span class="mn">' + parts.slice(1).join(" ") + '</span>' +
+      '<span class="mr">❤️ ' + d.lives + ' · 💰 ' + d.cash + '<br>🌊 ' + d.waves + ' волн</span>' +
+      '<span class="md">💎 +' + d.diamonds + (d.coins ? '<br>💰 +' + d.coins : '') + '</span>';
+    b.onclick = () => { diffI = i; haptic(); renderPlay(); };
+    dEl.appendChild(b);
+  });
+  MAPS.forEach((m, i) => {
+    const b = document.createElement("button"), parts = m.name.split(" ");
+    b.className = "map" + (i === mapI ? " on" : "");
+    const cv = document.createElement("canvas"); cv.className = "pv";
+    const t = document.createElement("div"); t.className = "mt";
+    const len = m.cells.length;
+    t.innerHTML = '<div class="mn">' + parts[0] + ' ' + parts.slice(1).join(" ") + '</div><div class="md">' + (MAP_UI[i] ? MAP_UI[i].d : "") + '</div>' +
+      '<div class="tags"><span class="tag">📏 ' + len + ' клеток</span>' + (m.dodge ? '<span class="tag warn">💨 уклонение ' + Math.round(m.dodge * 100) + '%</span>' : '<span class="tag ok">без уклонения</span>') + '</div>';
+    b.appendChild(cv); b.appendChild(t);
+    b.onclick = () => { mapI = i; haptic(); renderPlay(); };
+    mEl.appendChild(b); drawPreview(cv, m);
+  });
+  document.querySelector("#s-play .scroll").scrollTop = keepY;
+  const sb = $("sumbar"); sb.classList.toggle("warn", !picked.length);
+  { const ps = $("play-squad"); ps.textContent = "";
+    if (picked.length) { const b = document.createElement("b"); b.textContent = picked.map(i => cands[i].name).join(", "); ps.append("🧍 Отряд (" + picked.length + "/" + MAX_SQUAD + "): ", b); }
+    else ps.textContent = "⚠️ Сначала выберите человечинок."; }
+  $("start").textContent = picked.length ? "⚔️ В бой" : "🧍 Выбрать человечинок";
+}
+$("m-play").onclick = () => { haptic(); show("s-play"); };
+$("m-chel").onclick = () => { haptic(); show("s-pick"); };
+$("p-back").onclick = () => { haptic(); show("s-menu"); };
+$("start").onclick = () => { haptic("medium"); if (picked.length && needInv()) return; if (picked.length) startGame(); else show("s-pick"); };
+// ═══════════════ КООПЕРАТИВ ═══════════════
+// Хост считает игру у себя и шлёт снимки; гости шлют хосту команды и рисуют снимки.
+const COOP_STEP = 0.3;
+const coopMul = n => Math.round((1 + COOP_STEP * (Math.max(1, n) - 1)) * 100) / 100;   // сложность: 1 игрок ×1.0, +0.3 за каждого следующего (HP врагов)
+const OWN_COL = ["#7c8cff", "#ff8a3d", "#3ddc84", "#ff5dd2"];
+let coop = null, cmdQ = Promise.resolve();
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const isGuest = () => !!(G && G.coop && !G.coop.host);
+const coopMe = () => (G && G.coop ? G.coop.me : 0);
+const ownIdx = u => { const i = G && G.coop ? G.coop.players.findIndex(p => p.u === u) : 0; return i < 0 ? 0 : i; };
+const squadOut = () => picked.map(i => cands[i]);
+async function apiRaw(body) {
+  const r = await fetch(IMG_BASE + "/ttdsrv", {method: "POST", headers: {"Content-Type": "application/json"}, body});
+  return r.json();
+}
+const api = (op, extra) => apiRaw(JSON.stringify(Object.assign({op, initData: tg ? tg.initData : ""}, extra || {})));
+function sendCmd(c) { if (!coop) return; const id = coop.id; cmdQ = cmdQ.then(() => api("cmd", {id, c})).catch(() => {}); }
+
+// ── снимок состояния (хост → сервер → гости) ──
+const snapRep = (k, v) => (k === "owner" && v && typeof v === "object") ? 1 : (k === "at" && typeof v === "number") ? Math.max(0, Math.round(performance.now() - v)) : v; // at → возраст в мс, т.к. часы хоста и гостя разные
+let snapT = 0, snapTm = null, snapBusy = false, snapPend = false;
+function makeSnap(full) {
+  const s = {seq: ++G.snapSeq, phase, wave: G.wave, money: G.money, wallets: G.wallets, enemyNid: G.enemyNid, lives: G.lives, maxLives: G.maxLives, nid: G.nid, placed: G.placed, invest: G.invest,
+    enemies: G.enemies, allies: G.allies.map(a => Object.assign({}, a, {ti: G.towers.indexOf(a.tower), tower: undefined})), fx: G.fx,
+    log: G.log, bl: breakLeft, over: G.over, wt: G.waveTotal, sk: !!G.skipOk, note: G.note, ctk: G.ctk || 0,
+    wb: G.waveBonus, fb: G.farmBonus, pw: G.paidWave};
+  if (full) { s.tw = G.towers; s.diff = diffI; s.map = mapI; s.players = G.coop.players; s.n = G.coop.n; }
+  return s;
+}
+let snapFull = true;
+function pubSnap(force) {
+  if (!G || !G.coop || !G.coop.host || !coop) return;
+  const now = Date.now();
+  if (!force && now - snapT < 250) { if (!snapTm) snapTm = setTimeout(() => { snapTm = null; pubSnap(true); }, 260 - (now - snapT)); return; }
+  if (snapBusy) { snapPend = true; return; }
+  snapT = now; snapBusy = true;
+  const full = snapFull; snapFull = false;
+  apiRaw('{"op":"snap","initData":' + JSON.stringify(tg ? tg.initData : "") + ',"id":' + JSON.stringify(coop.id) + ',"s":' + JSON.stringify(makeSnap(full), snapRep) + '}')
+    .then(j => { if (j && !j.ok && full) snapFull = true; }).catch(() => { if (full) snapFull = true; })
+    .finally(() => { snapBusy = false; if (snapPend) { snapPend = false; pubSnap(true); } });
+}
+setInterval(() => { if (G && G.coop && G.coop.host) pubSnap(); }, 2000);
+
+// ── запуск игры ──
+function beginCoop(tw, host, nPlayers, me, players) {
+  ghosts.length = 0; fxShots.length = 0; WSCALE = DIFFS[diffI].waves; WAVES = DIFFS[diffI].endless ? Infinity : WSCALE; setMap(MAPS[mapI]);
+  G = newGame(tw, DIFFS[diffI], MAPS[mapI]); G.t0 = Date.now(); frame.ts = -1; $("h-time").textContent = "⏱0:00";
+  G.hpMul *= coopMul(nPlayers);
+  G.coop = {host, me, n: nPlayers, players};
+  G.wallets = Object.create(null);
+  for (const player of players) G.wallets[String(player.u)] = DIFFS[diffI].cash;
+  G.money = Object.values(G.wallets).reduce((sum, value) => sum + value, 0);
+  G.snapSeq = 0; G.snapSeqReceived = 0; G.ctk = 0;
+  phase = "build"; breakLeft = null; holding = null; inspect = null; cursor = null; speedIdx = 0; tickMs = SPEEDS[0]; $("b-speed").textContent = "×1";
+  audio(); music(true); paused = false; $("over").hidden = true; $("gchat").hidden = true;
+  $("squad").classList.add("coop"); $("b-chat").hidden = false; $("b-chat").textContent = "💬";
+  if (coop) coop.unread = 0;
+  show("s-game"); resize(); refreshUI();
+}
+function cleanTower(t) {
+  const num = (v, max) => { v = +v; return Number.isFinite(v) ? Math.min(Math.max(v, 0), max) : 0; };
+  if (!t || typeof t !== "object") return null;
+  const rarity = RARITY_KEYS.includes(t.rarity) ? t.rarity : "common";
+  const o = {name: String(t.name == null ? "?" : t.name).slice(0, 40), rarity, dmgMin: num(t.dmgMin, 1e7), dmgMax: num(t.dmgMax, 1e7),
+    hp: num(t.hp, 1e7), count: Math.max(1, num(t.count, 1000) | 0), img: t.img != null && Number.isFinite(+t.img) ? +t.img : null,
+    mutation: MUT_KEYS.includes(t.mutation) ? t.mutation : null, emoji: R_EMOJI[rarity], color: R_COLOR[rarity]};
+  if (o.dmgMax < o.dmgMin) o.dmgMax = o.dmgMin;
+  return o.dmgMax > 0 ? o : null;
+}
+function startHostGame(j) {
+  diffI = j.meta.diff; mapI = j.meta.map;
+  const tw = [], players = [];
+  j.towers.forEach(p => { players.push({u: p.u, n: p.n}); (Array.isArray(p.tw) ? p.tw.slice(0, MAX_SQUAD) : []).forEach(t0 => { const t = cleanTower(t0); if (t) tw.push(Object.assign(fixSummoner(t), {owner: p.u, ownerName: String(p.n).slice(0, 40)})); }); });
+  snapFull = true; beginCoop(tw, true, players.length, j.me, players); pubSnap(true);
+}
+function safeCopy(t) {
+  const c = {}; if (!t || typeof t !== "object") return c;
+  for (const k of Object.keys(t)) if (k !== "__proto__" && k !== "constructor" && k !== "prototype") c[k] = t[k];
+  c.name = String(c.name == null ? "?" : c.name).slice(0, 40);
+  c.img = c.img != null && Number.isFinite(+c.img) ? +c.img : null;
+  return c;
+}
+function startGuestGame(init) {
+  if (!init || !Number.isInteger(init.diff) || !DIFFS[init.diff] || !Number.isInteger(init.map) || !MAPS[init.map] ||
+      !Array.isArray(init.tw) || init.tw.length > 64 || !Array.isArray(init.players) || init.players.length > 8) return;
+  diffI = init.diff; mapI = init.map;
+  beginCoop(init.tw.map(safeCopy), false, init.n, coop.me, init.players);
+}
+function coopUI() {
+  if (!G) return;
+  const c = G.coop;
+  $("b-speed").hidden = !!c; $("b-auto").hidden = !!(c && !c.host);
+  if (c) { $("b-ff").hidden = phase === "over" || !c.host; if (c.host) pubSnap(phase === "over"); }
+}
+
+// ── гость: применение снимка ──
+let lastSig = "";
+function applySnap(s) {
+  if (!G || !G.coop || G.coop.host || !s || typeof s !== "object") return;
+  if ((Array.isArray(s.enemies) && s.enemies.length > 2000) || (Array.isArray(s.fx) && s.fx.length > 1000) ||
+      (Array.isArray(s.allies) && s.allies.length > 1000) || (s.placed && typeof s.placed === "object" && Object.keys(s.placed).length > 500)) return;
+  // Ответы опроса могут задерживаться. Старый снимок не должен откатывать врагов назад.
+  if (Number.isFinite(s.seq) && s.seq <= (G.snapSeqReceived || 0)) return;
+  if (Number.isFinite(s.seq)) G.snapSeqReceived = s.seq;
+  const now = performance.now();
+  G.wave = s.wave; G.money = Number(s.money) || 0; G.lives = s.lives; G.maxLives = s.maxLives; G.nid = s.nid; G.placed = s.placed || {}; G.invest = s.invest || {};
+  if (s.wallets && typeof s.wallets === "object") {
+    G.wallets = Object.assign(Object.create(null), s.wallets);
+  } else if (G.coop.players.length) {
+    // Совместимость со старыми снимками: временно делим старую общую сумму поровну.
+    const n = G.coop.players.length, share = Math.floor(G.money / n), remainder = G.money % n;
+    G.wallets = Object.create(null);
+    G.coop.players.forEach((player, i) => { G.wallets[String(player.u)] = share + (i < remainder ? 1 : 0); });
+  }
+  if (Number.isSafeInteger(s.enemyNid) && s.enemyNid > 0) G.enemyNid = s.enemyNid;
+  // Сохраняем объекты живых врагов по eid, чтобы анимация не сбрасывалась на каждом снимке.
+  const prevEnemies = new Map((G.enemies || []).filter(e => Number.isSafeInteger(e.eid)).map(e => [e.eid, e]));
+  G.enemies = (Array.isArray(s.enemies) ? s.enemies : []).map(raw => {
+    const old = Number.isSafeInteger(raw.eid) ? prevEnemies.get(raw.eid) : null;
+    const o = old ? Object.assign(old, raw) : raw;
+    o.at = typeof raw.at === "number" ? now - raw.at : (o.at || now);
+    return o;
+  });
+  const liveIds = new Set(G.enemies.filter(e => Number.isSafeInteger(e.eid)).map(e => e.eid));
+  for (let i = ghosts.length - 1; i >= 0; i--) if (Number.isSafeInteger(ghosts[i].e.eid) && liveIds.has(ghosts[i].e.eid)) ghosts.splice(i, 1);
+  G.allies = Array.isArray(s.allies) ? s.allies : []; for (const a of G.allies) { a.tower = G.towers[a.ti]; if (typeof a.at === "number") a.at = now - a.at; }
+  G.waveTotal = s.wt; G.skipOk = s.sk; G.log = s.log || ""; G.waveBonus = s.wb; G.farmBonus = s.fb; G.paidWave = s.pw;
+  G.bl = s.bl; G.blAt = now;
+  if (s.ctk !== G.ctk) {
+    G.ctk = s.ctk; lastTick = now; G.fx = s.fx || [];
+    const fixAt = o => { o.at = typeof o.at === "number" ? now - o.at : now; };
+    for (const f of G.fx) { if (f.enemy) fixAt(f.enemy); if (f.t === "die" && f.e) fixAt(f.e); }
+    for (const f of G.fx) {
+      fxShots.push(Object.assign({t0: now}, f));
+      if (f.t === "die" && f.e && f.d > 0 && !(Number.isSafeInteger(f.e.eid) && liveIds.has(f.e.eid))) ghosts.push({e: f.e, until: now + f.d * tickMs});
+    }
+    for (const f of G.fx) if (f.t === "stun") sfx("breach");
+    if (G.log.includes("💔")) sfx("breach");
+  }
+  if (s.note && s.note.u === G.coop.me && s.note.n !== G.noteSeen) { G.noteSeen = s.note.n; $("info").textContent = s.note.t; }
+  if (s.phase === "over") {
+    if (phase !== "over") { G.over = s.over; finish(); }
+    return;
+  }
+  const np = s.phase === "run" ? "run" : "build";
+  if (np === "run" && phase === "build") sfx("wave");
+  phase = np;
+  const sig = np + s.wave + "|" + Object.keys(G.placed).map(k => k + ":" + G.placed[k].lvl).join(",");
+  if (sig !== lastSig) { lastSig = sig; refreshUI(); }
+  else {
+    $("h-money").textContent = "💰 " + Math.floor(playerMoney(G, coopMe())); $("h-lives").textContent = "❤️ " + G.lives;
+    $("prev").textContent = phase === "build" ? "" : (G.log || ""); updSkip(); upgState();
+  }
+  const boss = G.enemies.find(e => e.isBoss), bw = $("boss");
+  bw.style.display = boss && phase === "run" ? "block" : "none";
+  if (boss) { $("boss-f").style.width = Math.max(0, boss.hp / boss.maxHp * 100) + "%"; $("boss-t").textContent = (boss.kind === "mini" ? "👹 МИНИ-БОСС " : "👹 БОСС ") + Math.max(0, boss.hp) + " / " + boss.maxHp; }
+}
+function guestFrame(now) {
+  if (phase !== "over") { const sec = Math.floor((Date.now() - G.t0) / 1000); if (sec !== frame.ts) { frame.ts = sec; $("h-time").textContent = "⏱" + fmtTime(sec); } }
+  if (phase === "build" && G.bl != null && holding === null) {
+    const nx = G.wave + 1; $("b-wave").textContent = (nx >= WAVES ? "👹 К боссу!" : "▶ Волна " + nx) + " · " + Math.max(0, Math.ceil((G.bl - (now - G.blAt)) / 1000)) + "с";
+  }
+  draw(now);
+}
+
+// ── хост: команды гостей ──
+const cmdRate = Object.create(null);
+function hostCmd(c) {
+  if (!G || !G.coop || !G.coop.host || phase === "over") return;
+  if (!c || typeof c !== "object") return;
+  { const nowT = performance.now(), r = cmdRate[String(c.u)] || (cmdRate[String(c.u)] = {t: nowT, n: 0});
+    if (nowT - r.t > 1000) { r.t = nowT; r.n = 0; }
+    if (++r.n > 30) return; }   // не больше 30 команд в секунду от одного игрока
+  const u = c.u; let ok = false;
+  if (c.c === "place") ok = actPlace(u, c.t | 0, c.x, c.y) !== false;
+  else if (c.c === "up") ok = actUp(u, +c.k);
+  else if (c.c === "sell") { ok = actSell(u, +c.k); if (ok && inspect === +c.k) inspect = null; }
+  else if (c.c === "tgt") { const pl = G.placed[+c.k]; if (pl && G.towers[pl.t].owner === u) { pl.target = ((pl.target || 0) + 1) % 4; ok = true; } }
+  else if (c.c === "wave") { if (phase === "build") { if (Object.keys(G.placed).length) { $("b-wave").onclick(); return; } msgTo(u, "⚠️ Сначала поставьте хотя бы одну человечинку"); } }
+  else if (c.c === "skip") { doSkip(u); ok = true; }
+  if (ok) { sfx("place"); refreshUI(); } else pubSnap(true);
+}
+
+// ── опрос сервера ──
+async function pollLoop(tok) {
+  while (coop && coop.tok === tok) {
+    try {
+      const j = await api("poll", {seq: coop.seq, ci: coop.ci, ki: coop.ki, ss: coop.ss});
+      if (!coop || coop.tok !== tok) return;
+      if (!j.ok) { if (j.gone) { coopGone(j.kicked); return; } await sleep(1500); continue; }
+      coop.seq = j.seq; coop.me = j.me; coop.meta = j.meta;
+      if (j.chat && j.chat.length) {
+        coop.ci = j.chat[j.chat.length - 1].i; j.chat.forEach(m => coop.chat.push(m)); if (coop.chat.length > 200) coop.chat.splice(0, coop.chat.length - 200);
+        if (!$("s-game").hidden && $("gchat").hidden) { coop.unread += j.chat.filter(m => m.u !== j.me).length; $("b-chat").textContent = "💬" + (coop.unread || ""); }
+        if (coop.polled && j.chat.some(m => m.u !== j.me)) sfx("chat");
+        chatRender();
+      }
+      coop.polled = true;
+      if (j.ki != null) coop.ki = j.ki;
+      if (j.cmds) j.cmds.forEach(hostCmd);
+      if (j.ss != null) coop.ss = j.ss;
+      if (j.meta.state !== "lobby" && !G && j.meta.host === j.me && j.towers) startHostGame(j);
+      if (j.snap) { if (!G && j.init) startGuestGame(j.init); if (G && G.coop && !G.coop.host) applySnap(j.snap); }
+      lobbyRender();
+    } catch (e) { await sleep(1500); }
+  }
+}
+function enterLobby(id) {
+  coop = {id, tok: Math.random(), seq: 0, ci: 0, ki: 0, ss: 0, chat: [], unread: 0, me: 0, meta: null};
+  snapFull = true; lastSig = ""; show("s-lobby"); chatRender(); pollLoop(coop.tok);
+}
+function coopStop() {
+  $("squad").classList.remove("coop"); $("b-chat").hidden = true; $("gchat").hidden = true;
+  if (!coop) return; const id = coop.id, lateHost = !!(G && G.coop && G.coop.host && phase === "over"); coop.tok = null; coop = null; snapPend = false;
+  setTimeout(() => api("leave", {id}).catch(() => {}), lateHost ? 3000 : 0);   // хост уходит позже, чтобы гости успели получить итог игры
+}
+function coopGone(kicked) {
+  const inGame = !!G;
+  coop = null;
+  if (inGame && phase !== "over") { phase = "over"; music(false); $("o-t").textContent = "🔌 Сервер закрыт"; $("o-s").textContent = "Хост вышел или пропала связь"; $("o-r").textContent = ""; $("o-retry").hidden = true; $("over").hidden = false; }
+  else if (!inGame) { show("s-srv"); $("sv-sub").textContent = kicked ? "⚠️ Хост исключил вас с сервера" : "⚠️ Сервер закрыт"; }
+}
+
+// ── чат ──
+function chatRender() {
+  if (!coop) return;
+  ["lb-chat", "gc-list"].forEach(id => {
+    const el = $(id); el.innerHTML = "";
+    coop.chat.slice(-60).forEach(m => {
+      const d = document.createElement("div"), b = document.createElement("b");
+      const pi = coop.meta ? coop.meta.players.findIndex(p => p.u === m.u) : -1;
+      b.style.color = OWN_COL[(pi < 0 ? 0 : pi) % 4]; b.textContent = m.n + ": "; d.append(b, m.t); el.appendChild(d);
+    });
+    el.scrollTop = el.scrollHeight;
+  });
+}
+function chatSend(inp) { const t = inp.value.trim(); if (!t || !coop) return; inp.value = ""; api("chat", {id: coop.id, text: t}).catch(() => {}); }
+$("lb-send").onclick = () => chatSend($("lb-in")); $("gc-send").onclick = () => chatSend($("gc-in"));
+$("lb-in").onkeydown = e => { if (e.key === "Enter") chatSend($("lb-in")); }; $("gc-in").onkeydown = e => { if (e.key === "Enter") chatSend($("gc-in")); };
+$("b-chat").onclick = () => { const g = $("gchat"); g.hidden = !g.hidden; if (coop) coop.unread = 0; $("b-chat").textContent = "💬"; chatRender(); };
+$("gc-x").onclick = () => { $("gchat").hidden = true; };
+
+// ── экран серверов ──
+let svTm = null;
+const svMsg = t => { $("sv-sub").textContent = t; };
+async function svRefresh() {
+  clearTimeout(svTm);
+  if ($("s-srv").hidden) return;
+  const L = $("sv-list");
+  if (!tg || !tg.initData) { L.innerHTML = '<p class="sub">Серверы доступны только при запуске из Telegram.</p>'; return; }
+  try {
+    const j = await api("list"); if (!j.ok) throw 0;
+    L.innerHTML = "";
+    if (!j.list.length) L.innerHTML = '<p class="sub" style="text-align:center;margin-top:20px">Пока нет серверов. Создайте первый!</p>';
+    j.list.forEach(m => {
+      const d = document.createElement("div"); d.className = "card";
+      d.innerHTML = '<div class="em">🌐</div><div><div class="nm"></div><div class="st"></div></div><div class="ck"></div>';
+      d.querySelector(".nm").textContent = m.name;
+      d.querySelector(".st").textContent = "👥 " + m.players.length + "/" + m.max + " · " + (DIFFS[m.diff] ? DIFFS[m.diff].name : "") + " · " + (MAPS[m.map] ? MAPS[m.map].name : "") + (m.state === "lobby" ? "" : " · ⚔️ идёт игра");
+      d.querySelector(".ck").textContent = m.state === "lobby" && m.players.length < m.max ? "➡️" : "🔒";
+      d.onclick = () => svJoin(m);
+      L.appendChild(d);
+    });
+  } catch (e) { L.innerHTML = '<p class="sub">⚠️ Нет связи с ботом</p>'; }
+  svTm = setTimeout(svRefresh, 4000);
+}
+async function svJoin(m) {
+  if (m.state !== "lobby") { svMsg("Игра уже идёт — зайти нельзя"); return; }
+  if (!picked.length) { svMsg("Сначала выберите человечинок"); show("s-pick"); return; }
+  if (needInv()) return;
+  try { const j = await api("join", {id: m.id, towers: squadOut()}); if (!j.ok) { svMsg("⚠️ " + j.error); return; } enterLobby(j.id); }
+  catch (e) { svMsg("⚠️ Нет связи с ботом"); }
+}
+$("sv-new").onclick = async () => {
+  if (!tg || !tg.initData) { svMsg("Серверы работают только в Telegram"); return; }
+  if (!picked.length) { svMsg("Сначала выберите человечинок"); show("s-pick"); return; }
+  if (needInv()) return;
+  try { const j = await api("create", {title: $("sv-title").value, map: mapI, diff: diffI, towers: squadOut()}); if (!j.ok) { svMsg("⚠️ " + j.error); return; } enterLobby(j.id); }
+  catch (e) { svMsg("⚠️ Нет связи с ботом"); }
+};
+$("m-srv").onclick = () => { haptic(); show("s-srv"); };
+$("sv-back").onclick = () => { clearTimeout(svTm); show("s-menu"); };
+
+// ── лобби ──
+let kickArm = null;
+function lobbyRender() {
+  if (!coop || !coop.meta || $("s-lobby").hidden) return;
+  const m = coop.meta, isHost = m.host === coop.me;
+  $("lb-title").textContent = m.name;
+  const P = $("lb-players"); P.innerHTML = "";
+  m.players.forEach((p, i) => {
+    const d = document.createElement("div"); d.className = "card"; d.style.cursor = "default"; d.style.borderColor = OWN_COL[i % 4];
+    d.innerHTML = '<div class="em"></div><div><div class="nm"></div><div class="st"></div></div>';
+    d.querySelector(".em").textContent = p.u === m.host ? "👑" : "👤";
+    d.querySelector(".nm").textContent = p.n + (p.u === coop.me ? " (вы)" : "");
+    d.querySelector(".st").textContent = "🧍 человечинок: " + p.t + (p.u === m.host ? " · хост" : "");
+    if (isHost && p.u !== coop.me && m.state === "lobby") {
+      const k = document.createElement("button"); k.textContent = kickArm === p.u ? "Точно?" : "🚫 Кик"; k.style.cssText = "margin-left:auto;padding:6px 10px;font-size:13px";
+      k.onclick = () => { if (kickArm === p.u) { kickArm = null; api("kick", {id: coop.id, u: p.u}).catch(() => {}); } else { kickArm = p.u; lobbyRender(); setTimeout(() => { if (kickArm === p.u) { kickArm = null; lobbyRender(); } }, 2500); } };
+      d.appendChild(k);
+    }
+    P.appendChild(d);
+  });
+  $("lb-set").hidden = !isHost;
+  if (isHost) {
+    const fill = (id, arr, cur, key) => { const el = $(id); el.innerHTML = ""; arr.forEach((a, i) => { const b = document.createElement("button"); b.textContent = a.name; b.style.flex = "1 1 40%"; if (i === cur) b.className = "on"; b.onclick = () => api("settings", {id: coop.id, [key]: i}).catch(() => {}); el.appendChild(b); }); };
+    fill("lb-d", DIFFS, m.diff, "diff"); fill("lb-m", MAPS, m.map, "map");
+  }
+  $("lb-info").textContent = "⚔️ Режим: " + (DIFFS[m.diff] ? DIFFS[m.diff].name : "") + " · 🗺 " + (MAPS[m.map] ? MAPS[m.map].name : "") + " · 👹 враги ×" + coopMul(m.players.length) + " HP · 💰 у каждого свой бюджет · ❤️ жизни общие";
+  const st = $("lb-start");
+  if (m.state !== "lobby") { st.textContent = "⏳ Загрузка игры…"; st.disabled = true; }
+  else if (isHost) { st.textContent = "⚔️ Начать (" + m.players.length + " " + (m.players.length === 1 ? "игрок" : "игр.") + ")"; st.disabled = false; }
+  else { st.textContent = "⏳ Ждём, пока хост начнёт"; st.disabled = true; }
+}
+$("lb-start").onclick = () => { if (coop) api("start", {id: coop.id}).catch(() => {}); };
+$("lb-squad").onclick = () => show("s-pick");
+$("lb-back").onclick = () => { coopStop(); show("s-srv"); };
+
+show("s-menu");
+requestAnimationFrame(frame);
+if (new URLSearchParams(location.search).get("debug") === "1" && !(tg && tg.initData)) window.__ttd = {get coop() { return coop; }, applySnap, makeSnap, step, newGame, startWave, buildQueue, towerPower, squadPower, farmIncome, towerMaxLvl, isFarmTower, get G() { return G; }};
+</script>
+</body>
+</html>
